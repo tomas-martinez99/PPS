@@ -1,0 +1,14 @@
+.custom-button {
+    background-color: #2C3E50; /* Azul marino profundo */
+    color: #FDFEFE; /* Blanco nieve */
+    border: 2px solid #7B241C; /* Borgoña oscuro */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Añade una transición suave */
+  }
+  .custom-button:hover {
+    background-color: #A9CCE3; /* Azul claro frío */
+    color: #1C2833; /* Verde oscuro apagado */
+    border-color: #4A235A; /* Morado profundo */
+  }
