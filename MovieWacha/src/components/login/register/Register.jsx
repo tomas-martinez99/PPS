@@ -34,7 +34,7 @@ const initialRegisterUserForm = {
   email: "",
   password: "",
   confirmPassword: "",
-  rol: "2",
+  rol: 2,
   telephone: "",
   filmsFav: [],
 };
