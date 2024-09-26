@@ -3,7 +3,6 @@ import "../../LayoutColors.css";
 import "./Header.css"
 import { useNavigate } from "react-router-dom";
 
-
 function Header() {
   const navigate = useNavigate();
   const handleHomeNavigation = () =>{
@@ -22,20 +21,18 @@ function Header() {
     >
       <Container fluid>
         <Navbar.Brand onClick={handleHomeNavigation} >
-          PC Building
+          MovieWacha
           </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav>
             <NavDropdown
               id="nav-dropdown-dark-example"
-              title="Dropdown"
+              title="Listas"
               menuVariant="dark"
             >
               <NavDropdown.Item href="#action/3.1">Peliculas</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Series
-              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">Series</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">Mis Favoritos</NavDropdown.Item>
             </NavDropdown>
           </Nav>
@@ -50,7 +47,7 @@ function Header() {
                 aria-label="Search"
                 style={{ minWidth: "150px", maxWidth: "100%" }}/>
               <Button className="custom-button">
-                <i className="fa-brands fa-searchengin"></i>
+                Buscar
               </Button>
             </Form>
           </div>
