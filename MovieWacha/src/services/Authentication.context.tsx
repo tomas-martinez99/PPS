@@ -10,9 +10,10 @@ const userValue = userValueString ? JSON.parse(userValueString) : null;
 export const AuthenticationContextProvider = ({ children }) => {
   const [user, setUser] = useState(userValue);
 
-  const handleLogin = (user, rol) => {
-    localStorage.setItem("user", JSON.stringify({ user, rol }));
-    setUser({ user, rol });
+  const handleLogin = (username,rol,email,filmsFav,status,firstName,lastName) => {
+    localStorage.setItem("user", JSON.stringify({ username,rol,email,status,filmsFav,firstName,lastName }));
+    setUser({ username,rol,email,status,filmsFav,firstName,lastName});
+    
   };
 
   const handleLogout = () => {

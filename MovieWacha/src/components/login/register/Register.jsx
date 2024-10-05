@@ -1,131 +1,119 @@
-import React, { useReducer, useState } from 'react'
+import { useReducer, useState, } from 'react'
 import PropTypes from 'prop-types'
 import { Alert, Button, Form, FloatingLabel, Card } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 import "./Register.css"
-// Series
-// -Id
-// -Name
-// -Descripción
-// -Lista de temporadas
-// -genero
-// -puntuacion
-
-// 	Admin
-// -id
-// -type: 0(Admin)-1(empleado)-2(usuario)
-// -usuario
-// -contraseña
-
-// 	Usuario : Admin
-// -Gmail
-// -numero de teléfono
-// -numero de tarjeta 
-// -ESATDO DE SUSCRIPCION
-// -Lista de favoritos
-// 	Empleado:Admin
-// -legajo
 
 const initialRegisterUserForm = {
-  id: 0,
   firstName: "",
   lastName: "",
   userName: "",
   email: "",
   password: "",
   confirmPassword: "",
-  rol: 2,
   telephone: "",
-  filmsFav: [],
+  errors: {
+    firstName: false,
+    lastName: false,
+    userName: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
+    telephone: false,
+    passwordMatch: false,
+  },
 };
 const newRegisterUserFormReducer = (state, action) => {
   switch (action.type) {
-    case "FIRSTNAME_FIELD":
+    case "FIELD_CHANGE":
       return {
         ...state,
-        firstName: action.value
+        [action.field]: action.value,
+        errors: { ...state.errors, [action.field]: false }
       };
-      case "LASTNAME_FIELD":
+    case "VALIDATE_FIELDS": {
+      const newErrors = {
+        firstName: !state.firstName,
+        lastName: !state.lastName,
+        userName: !state.userName,
+        email: !state.email,
+        password: !state.password,
+        confirmPassword: !state.confirmPassword,
+        telephone: !state.telephone,
+        passwordMatch: state.password !== state.confirmPassword
+      };
       return {
         ...state,
-        lastName: action.value
+        errors: newErrors,
       };
-      case "USERNAME_FIELD":
-      return {
-        ...state,
-        userName: action.value
-      };
-      case "TELEPHONE_FIELD":
-      return {
-        ...state,
-        telephone: action.value
-      };
-      case "EMAIL_FIELD":
-      return {
-        ...state,
-        email: action.value
-      };
-      case "PASSWORD_FIELD":
-      return {
-        ...state,
-        password: action.value
-      };
-      case "CONFIRMPASSWORD_FIELD":
-      return {
-        ...state,
-        confirmPassword: action.value
-      };
+    }
+
+
     case "RESET_FORM":
       return initialRegisterUserForm;
+
     default:
       return state;
   }
 };
 const Register = () => {
+  const [showPasswordMismatchAlert, setShowPasswordMismatchAlert] = useState(false)
+  const [showRegisterErrorAlert,setShowRegisterErrorAlert]= useState(false)
   const [newRegisterUserForm, dispatch] = useReducer(
     newRegisterUserFormReducer,
     initialRegisterUserForm
   )
-  // const [errors, setErrors] = useState({
-  //   firstName: false,
-  //   lastName: false,
-  //   userName: false,
-  //   email: false,
-  //   password: false,
-  //   confirmPassword: false,
-  //   telephone: false
-  // });
 
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const sumbitNewRegisterUserHandler = (e) =>{
+  const submitNewRegisterUserHandler = (e) => {
     e.preventDefault();
-    const newRegisterUserFormData ={
-      firstName: newRegisterUserForm.firstName,
-      lastName: newRegisterUserForm.lastName,
-      userName: newRegisterUserForm.userName,
-      email: newRegisterUserForm.email,
-      password: newRegisterUserForm.password,
-      confirmPassword: newRegisterUserForm.confirmPassword,
-      telephone: newRegisterUserForm.telephone,
-      rol: 2,
-      filmsFav: [],
+
+    dispatch({ type: "VALIDATE_FIELDS" });
+    const newErrors = {
+      firstName: !newRegisterUserForm.firstName,
+      lastName: !newRegisterUserForm.lastName,
+      userName: !newRegisterUserForm.userName,
+      email: !newRegisterUserForm.email,
+      password: !newRegisterUserForm.password,
+      confirmPassword: !newRegisterUserForm.confirmPassword,
+      telephone: !newRegisterUserForm.telephone,
+      passwordMatch: newRegisterUserForm.password !== newRegisterUserForm.confirmPassword
+    };
+
+    const hasErrors = Object.values(newErrors).some(error => error);
+    if (hasErrors){
+      if (newRegisterUserForm.password !== newRegisterUserForm.confirmPassword) {
+        setShowPasswordMismatchAlert(true);
+        return;
+      }else{
+      setShowRegisterErrorAlert(true)
+      return
+      }
+    }
+    
+
+    if (!hasErrors) {
+      const newRegisterUserFormData = {
+        firstName: newRegisterUserForm.firstName,
+        lastName: newRegisterUserForm.lastName,
+        userName: newRegisterUserForm.userName,
+        email: newRegisterUserForm.email,
+        password: newRegisterUserForm.password,
+        confirmPassword: newRegisterUserForm.confirmPassword,
+        telephone: newRegisterUserForm.telephone,
+        rol: 2,
+        filmsFav: [],
+      }
+      console.log(newRegisterUserFormData)
+      dispatch({
+        type: "RESET_FORM"
+      })
+      navigate("/registersuccess")
+      setShowPasswordMismatchAlert(false);
+      setShowRegisterErrorAlert(false)
     }
 
-    // setErrors({
-    //   firstName: !firstName,
-    //   lastName: !lastName,
-    //   userName: !username,
-    //   email: !email,
-    //   password: !password,
-    //   confirmPassword: !confirmPassword,
-    //   telephone: !telephone,
-    // });
-
-    console.log(newRegisterUserFormData)
-    dispatch({
-      type:"RESET_FORM"
-    })
 
   }
 
@@ -133,7 +121,7 @@ const Register = () => {
     <div className='d-flex justify-content-center align-items-center vh-100'>
       <Card className="p-4 px-5 shadow" style={{ width: "500px", height: "" }}>
         <Card.Body>
-          <Form className="text-center" onSubmit={sumbitNewRegisterUserHandler}>
+          <Form className="text-center" onSubmit={submitNewRegisterUserHandler}>
             <h1>Registrarse</h1>
             <Form.Group className="mb-3" controlId="formBasicFirstName">
               <FloatingLabel controlId="floatingFirstName" label="Ingresar su Nombre" className="mb-3">
@@ -141,13 +129,8 @@ const Register = () => {
                   type="text"
                   placeholder=""
                   value={newRegisterUserForm.firstName}
-                  onChange={(e) => 
-                    dispatch({
-                      type: "FIRSTNAME_FIELD",
-                      field: "firstName",
-                      value: e.target.value,
-                    })
-                  }
+                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "firstName", value: e.target.value })}
+                  className={newRegisterUserForm.errors.firstName ? 'is-invalid' : ''}
                 />
               </FloatingLabel>
             </Form.Group>
@@ -157,13 +140,8 @@ const Register = () => {
                   type="text"
                   placeholder=""
                   value={newRegisterUserForm.lastName}
-                  onChange={(e) => 
-                    dispatch({
-                      type: "LASTNAME_FIELD",
-                      field: "lastName",
-                      value: e.target.value,
-                    })
-                  }
+                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "lastName", value: e.target.value })}
+                  className={newRegisterUserForm.errors.lastName ? 'is-invalid' : ''}
                 />
               </FloatingLabel>
             </Form.Group>
@@ -173,29 +151,19 @@ const Register = () => {
                   type="text"
                   placeholder=""
                   value={newRegisterUserForm.userName}
-                  onChange={(e) => 
-                    dispatch({
-                      type: "USERNAME_FIELD",
-                      field: "userName",
-                      value: e.target.value,
-                    })
-                  }
+                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "userName", value: e.target.value })}
+                  className={newRegisterUserForm.errors.userName ? 'is-invalid' : ''}
                 />
               </FloatingLabel>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicTelephone">
-              <FloatingLabel controlId="floatingTelophone" label="Ingresar su Numeor de Telefono" className="mb-3">
+              <FloatingLabel controlId="floatingTelephone" label="Ingresar su Numeor de Telefono" className="mb-3">
                 <Form.Control
-                  type="string"
+                  type="tel"
                   placeholder=""
                   value={newRegisterUserForm.telephone}
-                  onChange={(e) => 
-                    dispatch({
-                      type: "TELEPHONE_FIELD",
-                      field: "telephone",
-                      value: e.target.value,
-                    })
-                  }
+                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "telephone", value: e.target.value })}
+                  className={newRegisterUserForm.errors.telephone ? 'is-invalid' : ''}
                 />
               </FloatingLabel>
             </Form.Group>
@@ -205,13 +173,8 @@ const Register = () => {
                   type="email"
                   placeholder=""
                   value={newRegisterUserForm.email}
-                  onChange={(e) => 
-                    dispatch({
-                      type: "EMAIL_FIELD",
-                      field: "email",
-                      value: e.target.value,
-                    })
-                  }
+                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "email", value: e.target.value })}
+                  className={newRegisterUserForm.errors.email ? 'is-invalid' : ''}
                 />
               </FloatingLabel>
             </Form.Group>
@@ -221,13 +184,8 @@ const Register = () => {
                   type='password'
                   placeholder=""
                   value={newRegisterUserForm.password}
-                  onChange={(e) => 
-                    dispatch({
-                      type: "PASSWORD_FIELD",
-                      field: "password",
-                      value: e.target.value,
-                    })
-                  }
+                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "password", value: e.target.value })}
+                  className={newRegisterUserForm.errors.password || newRegisterUserForm.errors.passwordMatch ? 'is-invalid' : ''}
                 />
               </FloatingLabel>
             </Form.Group>
@@ -237,16 +195,21 @@ const Register = () => {
                   type="password"
                   placeholder=""
                   value={newRegisterUserForm.confirmPassword}
-                  onChange={(e) => 
-                    dispatch({
-                      type: "CONFIRMPASSWORD_FIELD",
-                      field: "confirmPassword",
-                      value: e.target.value,
-                    })
-                  }
+                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "confirmPassword", value: e.target.value })}
+                  className={newRegisterUserForm.errors.confirmPassword || newRegisterUserForm.errors.passwordMatch ? 'is-invalid' : ''}
                 />
               </FloatingLabel>
             </Form.Group>
+            {showPasswordMismatchAlert && (
+              <Alert variant="danger" onClose={() => setShowPasswordMismatchAlert(false)} dismissible>
+                Las contraseñas no coinciden. Por favor, verifica.
+              </Alert>
+            )}
+            {showRegisterErrorAlert && (
+              <Alert variant="danger" onClose={() => setShowRegisterErrorAlert(false)} dismissible>
+                Porfavor complete todos los campos
+              </Alert>
+            )}
             <Button className='custom-button-register' type="submit" >
               Crear cuenta
             </Button>
