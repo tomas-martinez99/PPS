@@ -49,9 +49,9 @@ const LoginUser = () => {
       const response = await loginUser(user, password);
       if (response.success) {
         const user = response.data
-        handleLogin(user.user, user.rol)
+        handleLogin(user.username,user.rol,user.email,user.filmsFav,user.status,user.firstName,user.lastName)
         navigate("/")
-        console.log("user", response.data)
+        console.log("user", user)
 
 
       } else {

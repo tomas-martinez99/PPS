@@ -10,3 +10,6 @@
     border-color: #1C2833;
 
 }
+.is-invalid {
+    border-color: red;
+  }

@@ -7,6 +7,8 @@ import Register from './components/login/register/register';
 import NewFilm from './components/films/newFilm/NewFilm';
 import NewSeason from './components/films/newSeason/NewSeason';
 import NewSerie from './components/films/newSerie/NewSerie';
+import RegisterSuccess from './components/login/registerSuccess/RegisterSuccess';
+import Profile from './components/login/profile/Profile';
 
 function App() {
   const router = createBrowserRouter([
@@ -55,6 +57,22 @@ function App() {
       element:(
         <MainLayout>
           <NewSeason/>
+        </MainLayout>
+      )
+    },
+    {
+      path:"/registerSuccess",
+      element:(
+        <MainLayout>
+          <RegisterSuccess/>
+        </MainLayout>
+      )
+    },
+    {
+      path:"/Profile",
+      element:(
+        <MainLayout>
+          <Profile/>
         </MainLayout>
       )
     }

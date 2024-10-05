@@ -1,0 +1,10 @@
+body {
+    background-image: url('../public/fondo.png');
+    background-size: cover; /* Para que la imagen cubra toda la pantalla */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    height: 100vh; /* Asegura que cubra toda la pantalla */
+    margin: 0;
+    padding: 0;
+    color: azure;
+  }
