@@ -9,6 +9,8 @@ import NewSeason from './components/films/newSeason/NewSeason';
 import NewSerie from './components/films/newSerie/NewSerie';
 import RegisterSuccess from './components/login/registerSuccess/RegisterSuccess';
 import Profile from './components/login/profile/Profile';
+import MoviesCard from './components/films/moviesCard/MoviesCard';
+import SeriesCard from './components/films/serieCard/SeriesCard';
 
 function App() {
   const router = createBrowserRouter([
@@ -73,6 +75,22 @@ function App() {
       element:(
         <MainLayout>
           <Profile/>
+        </MainLayout>
+      )
+    },
+    {
+      path:"/moviesCard",
+      element:(
+        <MainLayout>
+          <MoviesCard/>
+        </MainLayout>
+      )
+    },
+    {
+      path:"/seriesCard",
+      element:(
+        <MainLayout>
+          <SeriesCard/>
         </MainLayout>
       )
     }
