@@ -69,10 +69,10 @@ const LoginUser = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
-      <Card className="p-4 px-5 shadow" style={{ width: "500px", height: "400px" }}>
+      <Card className="p-4 px-5 shadow" style={{ width: "500px", height: "400px", color: "white" }}>
         <Card.Body>
           <Form className="text-center">
-            <h1>Iniciar Sesión</h1>
+            <Form.Text>Iniciar Secion</Form.Text>
             <Form.Group className="mb-3" controlId="formBasicuser">
               <FloatingLabel label="Ingresar su Usuario" className="mb-3">
                 <Form.Control

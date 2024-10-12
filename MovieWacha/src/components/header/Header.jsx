@@ -1,37 +1,42 @@
-
-import { useContext} from 'react';
+import { useContext } from 'react';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { AuthenticationContext } from '../../services/Authentication.context'
 import { useNavigate } from 'react-router-dom';
 
 function Header() {
-
-
   const { user } = useContext(AuthenticationContext)
   const isLoggedIn = Boolean(user);
   const { handleLogout } = useContext(AuthenticationContext)
   const navigate = useNavigate()
+
   const handleClickLogout = () => {
     handleLogout();
+    navigate("/login")
   }
-  const handleClickProfile = () =>{
-    navigate("/Profile")
+
+  const handleClickProfile = () => {
+    navigate("/profile")
   }
 
   const navigation = [
-    { name: 'Home', href: '/', current: true },
+    { name: 'Inicio', href: '/', current: true },
   ];
   const buttonsLogin = [
-    { name: 'Login', href: '/login', current: false },
-    { name: 'register', href: '/register', current: false }
+    { name: 'Iniciar secion', href: '/login', current: false },
+    { name: 'Registratse', href: '/register', current: false }
   ]
 
   const filterOptions = [
-    { name: 'All Products', action: () => {/* Lógica para filtrar todos los productos */ } },
+    
     { name: 'Category 1', action: () => {/* Lógica para filtrar por categoría 1 */ } },
     { name: 'Category 2', action: () => {/* Lógica para filtrar por categoría 2 */ } },
-    
+  ];
+  const windowsOptionsAdmin = [
+    { name: 'Estadisticas', action: () => { navigate ("/statistics")} },
+    { name: 'Manejo de Peliculas/Series', action: () => { navigate ("/") } },
+    { name: 'Manejo de usuarios', action: () => {/* Lógica para filtrar por categoría 2 */ } },
+
   ];
 
   function classNames(...classes) {
@@ -58,37 +63,55 @@ function Header() {
                 className="h-8 w-auto"
               />
             </div>
-            <div className="hidden sm:ml-6 sm:block">
-              <div className="flex space-x-4">
-                {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="bg-gray-900 text-white : text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" >
-                    {item.name}
-                  </a>
-                ))}
-              </div>
-            </div>
-            <Menu as="div" className="relative inline-block text-left sm:ml-4 ">
-              <div>
-                <MenuButton className="bg-gray-900 text-white : text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
-                  Filter Products
-                </MenuButton>
-              </div>
-              <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                {filterOptions.map((option) => (
-                  <MenuItem key={option.name}>
-                    <button
-                      onClick={option.action}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      {option.name}
-                    </button>
-                  </MenuItem>
-                ))}
-              </MenuItems>
-            </Menu>
+            {user?.rol === 0 ? 
+              <Menu as="div" className="relative inline-block text-left sm:ml-4 ">
+                  <MenuButton className="bg-gray-900 text-white : text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                    Pantallas
+                  </MenuButton>
+                  <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  {windowsOptionsAdmin.map((option) => (
+                    <MenuItem key={option.name}>
+                      <button
+                        onClick={option.action}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        {option.name}
+                      </button>
+                    </MenuItem>
+                  ))}
+                </MenuItems>
+
+              </Menu>
+            :
+              <Menu as="div" className="relative inline-block text-left sm:ml-4 ">
+                <div className="hidden sm:ml-6 sm:block">
+                  <div className="flex space-x-4">
+                    {navigation.map((item) => (
+                      <a key={item.name} href={item.href}
+                        className="bg-gray-900 text-white : text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" >
+                        {item.name}
+                      </a>))}
+                 
+               
+                  <MenuButton className="bg-gray-900 text-white : text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                    Filter Products
+                  </MenuButton>
+                  </div>
+                  </div>
+                <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  {filterOptions.map((option) => (
+                    <MenuItem key={option.name}>
+                      <button
+                        onClick={option.action}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        {option.name}
+                      </button>
+                    </MenuItem>
+                  ))}
+                </MenuItems>
+              </Menu>
+            }
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             {isLoggedIn ?
@@ -107,20 +130,16 @@ function Header() {
                 <MenuItems
                   transition
                   className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-                >
-                  <MenuItem>
-                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
-                      Your Profile
-                    </a>
-                  </MenuItem>
+                >{user.rol === 2 &&
                   <MenuItem>
                     <a onClick={handleClickProfile} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
-                      Settings
+                      Perfil
                     </a>
                   </MenuItem>
+                  }
                   <MenuItem>
                     <button onClick={handleClickLogout} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
-                      Sign out
+                      Cerrar Sesion
                     </button>
                   </MenuItem>
                 </MenuItems>

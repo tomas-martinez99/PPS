@@ -24,3 +24,25 @@ export const loginUser = async (user, password) => {
         throw error;
     }
 }
+
+export const registerUser = async (userData) => {
+    try {
+      const response = await fetch(`${API_URL}/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error en la solicitud');
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error al registrar el usuario:", error);
+      throw error;
+    }
+  };

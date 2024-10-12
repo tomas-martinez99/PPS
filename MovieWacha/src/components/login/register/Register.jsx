@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Alert, Button, Form, FloatingLabel, Card } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 import "./Register.css"
+import { registerUser } from '../../../services/apiServices';
 
 const initialRegisterUserForm = {
   firstName: "",
@@ -48,7 +49,6 @@ const newRegisterUserFormReducer = (state, action) => {
       };
     }
 
-
     case "RESET_FORM":
       return initialRegisterUserForm;
 
@@ -59,14 +59,12 @@ const newRegisterUserFormReducer = (state, action) => {
 const Register = () => {
   const [showPasswordMismatchAlert, setShowPasswordMismatchAlert] = useState(false)
   const [showRegisterErrorAlert,setShowRegisterErrorAlert]= useState(false)
-  const [newRegisterUserForm, dispatch] = useReducer(
-    newRegisterUserFormReducer,
-    initialRegisterUserForm
-  )
-
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showRegisterErrorAlertMessage, setShowRegisterErrorAlertMessage] = useState()
+  const [newRegisterUserForm, dispatch] = useReducer( newRegisterUserFormReducer,initialRegisterUserForm)
   const navigate = useNavigate();
 
-  const submitNewRegisterUserHandler = (e) => {
+  const submitNewRegisterUserHandler = async (e) => {
     e.preventDefault();
 
     dispatch({ type: "VALIDATE_FIELDS" });
@@ -91,7 +89,6 @@ const Register = () => {
       return
       }
     }
-    
 
     if (!hasErrors) {
       const newRegisterUserFormData = {
@@ -105,18 +102,36 @@ const Register = () => {
         rol: 2,
         filmsFav: [],
       }
-      console.log(newRegisterUserFormData)
-      dispatch({
-        type: "RESET_FORM"
-      })
-      navigate("/registersuccess")
-      setShowPasswordMismatchAlert(false);
-      setShowRegisterErrorAlert(false)
-    }
 
+      try{
+        setIsSubmitting(true)
+        const responseData = await registerUser(newRegisterUserFormData)
+        console.log("Usuario Registrado con exito", responseData)
 
-  }
-
+        dispatch({type: "RESET_FORM"})
+        navigate("/registersuccess")
+        setShowPasswordMismatchAlert(false)
+        setShowRegisterErrorAlert(false)
+      }catch (error){
+        console.error("Error al registrar", error);
+      // Verifica si es un error relacionado con el nombre de usuario o el email
+      if (error.message.includes('usuario ya está en uso')) {
+        setShowRegisterErrorAlert(true);
+        // Mostrar mensaje específico para nombre de usuario
+        setShowRegisterErrorAlertMessage('El nombre de usuario ya está en uso');
+      } else if (error.message.includes('email ya está en uso')) {
+        setShowRegisterErrorAlert(true);
+        // Mostrar mensaje específico para email
+        setShowRegisterErrorAlertMessage('El email ya está en uso');
+      } else {
+        setShowRegisterErrorAlert(true);
+        setShowRegisterErrorAlertMessage('Error al registrar. Inténtelo de nuevo más tarde.');
+      }
+        setShowRegisterErrorAlert(true)
+      } finally{
+        setIsSubmitting(false)
+      }
+  }}
   return (
     <div className='d-flex justify-content-center align-items-center vh-100'>
       <Card className="p-4 px-5 shadow" style={{ width: "500px", height: "" }}>
@@ -207,14 +222,13 @@ const Register = () => {
             )}
             {showRegisterErrorAlert && (
               <Alert variant="danger" onClose={() => setShowRegisterErrorAlert(false)} dismissible>
-                Porfavor complete todos los campos
+                {setShowRegisterErrorAlertMessage}
               </Alert>
             )}
-            <Button className='custom-button-register' type="submit" >
-              Crear cuenta
+            <Button className='custom-button-register' type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Registrando...' : 'Crear cuenta'}
             </Button>
           </Form>
-
         </Card.Body>
       </Card>
     </div>

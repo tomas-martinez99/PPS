@@ -33,3 +33,31 @@ export const getSeries = async () =>{
         throw error;
     }
 }
+
+export const deleteMovie = async (id) => {
+    const response = await fetch(`${API_URL}/MOVIES/${id}`, { method: 'DELETE' });
+    if (!response.ok) {
+      throw new Error('Error al eliminar la pelicula');
+    }
+  };
+
+  export const deleteSerie = async (id) => {
+    const response = await fetch(`${API_URL}/series/${id}`, { method: 'DELETE' });
+    if (!response.ok) {
+      throw new Error('Error al eliminar la serie');
+    }
+  };
+
+  export const deleteSeason = async (serieId, seasonId) => {
+    const response = await fetch(`${API_URL}/series/${serieId}/seasons/${seasonId}`, { method: 'DELETE' });
+    if (!response.ok) {
+      throw new Error('Error al eliminar la temporada');
+    }
+  };
+  
+  export const deleteEpisode = async (serieId, seasonId, episodeId) => {
+    const response = await fetch(`${API_URL}/series/${serieId}/seasons/${seasonId}/episodes/${episodeId}`, { method: 'DELETE' });
+    if (!response.ok) {
+      throw new Error('Error al eliminar el episodio');
+    }
+  };

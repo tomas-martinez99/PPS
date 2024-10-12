@@ -44,12 +44,6 @@ const MoviesList = ({ movies, series }) => {
   React.useEffect(() => {
     combinedGenres();
   }, [movies, series])
-  // const uniqueGeneres =[...new Set(movies.map((m)=> m.genre))];
-
-  // const moviesByGenre = uniqueGeneres.reduce((acc, genre) =>{
-  //   acc[genre] = movies.filter((m)=> m.genre === genre)
-  //   return acc
-  // }, {})
   return (
     <div>
       {Object.keys(combinedByGenre).map((genre) => (
@@ -90,14 +84,14 @@ MoviesList.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     genre: PropTypes.string.isRequired,
-    img: PropTypes.string.isRequired,// Agregar title para el alt en la imagen
+    img: PropTypes.string.isRequired,
   })
   ).isRequired,
   series: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
-      genre: PropTypes.arrayOf(PropTypes.string).isRequired, // Cambiar a array de géneros
+      genre: PropTypes.string.isRequired, 
       img: PropTypes.string.isRequired,
     })
   ).isRequired,
