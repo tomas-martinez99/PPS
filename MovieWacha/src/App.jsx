@@ -4,13 +4,14 @@ import MainLayout from './components/layout/MainLayout'
 import LoginUser from './components/login/loginUser/LoginUser';
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Register from './components/login/register/register';
-import NewFilm from './components/films/newFilm/NewFilm';
 import NewSeason from './components/films/newSeason/NewSeason';
 import NewSerie from './components/films/newSerie/NewSerie';
 import RegisterSuccess from './components/login/registerSuccess/RegisterSuccess';
 import Profile from './components/login/profile/Profile';
 import MoviesCard from './components/films/moviesCard/MoviesCard';
 import SeriesCard from './components/films/serieCard/SeriesCard';
+import Statistics from './components/statistics/Statistics';
+import AdminMoviesList from './components/films/adminMoviesList/adminMoviesList';
 
 function App() {
   const router = createBrowserRouter([
@@ -39,30 +40,6 @@ function App() {
       )
     },
     {
-      path:"/addFilm",
-      element:(
-        <MainLayout>
-          <NewFilm/>
-        </MainLayout>
-      )
-    },
-    {
-      path:"/addSerie",
-      element:(
-        <MainLayout>
-          <NewSerie/>
-        </MainLayout>
-      )
-    },
-    {
-      path:"/addSeason",
-      element:(
-        <MainLayout>
-          <NewSeason/>
-        </MainLayout>
-      )
-    },
-    {
       path:"/registerSuccess",
       element:(
         <MainLayout>
@@ -71,7 +48,7 @@ function App() {
       )
     },
     {
-      path:"/Profile",
+      path:"/profile",
       element:(
         <MainLayout>
           <Profile/>
@@ -93,7 +70,24 @@ function App() {
           <SeriesCard/>
         </MainLayout>
       )
+    },
+    {
+      path:"/statistics",
+      element:(
+        <MainLayout>
+          <Statistics/>
+        </MainLayout>
+      )
+    },
+    {
+      path:"/newSerie",
+      element:(
+        <MainLayout>
+          <NewSerie/>
+        </MainLayout>
+      )
     }
+
 
   ])
 
