@@ -4,7 +4,7 @@
     border-radius: 0.5rem; /* redondeo */
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* sombra */
-    background-image: url('../../../../public/fondo.png');
+    background-image: url('/fondo.png');
     background-size: cover;
     background-position: center;
     height: auto; /* Ajusta según sea necesario */

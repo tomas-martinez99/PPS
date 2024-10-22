@@ -1,22 +1,34 @@
-const API_URL= "http://localhost:8000";
+import { data } from "autoprefixer";
 
-export const loginUser = async (user, password) => {
+const API_URL= "https://localhost:7289/api/auth";
+
+export const loginUser = async (email, password) => {
     try{
         const response = await fetch(`${API_URL}/login`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",},
-            body: JSON.stringify({username: user, password: password}),
+            body: JSON.stringify({email: email, password: password}),
         })
-        if(!response.ok){
-            if (response.status === 404 || response.status === 401) {
-                return { success: false, message: 'Usuario o contraseña incorrectos' };
-        }
-        throw new Error('Error en el servidor');
-        } 
-        
-        const data = await response.json();
-        console.log("user",data)
+        if (!response.ok) {
+          let errorMessage = 'Error en el servidor';
+          
+          // Intenta obtener el cuerpo de la respuesta en caso de error
+          const errorData = await response.json().catch(() => null); // Captura errores de parsing de JSON
+
+          if (errorData && errorData.message) {
+              errorMessage = errorData.message;
+          } else if (response.status === 404 || response.status === 401) {
+              errorMessage = 'Usuario o contraseña incorrectos';
+          } else if (response.status === 400) {
+              errorMessage = 'Error en la solicitud';
+          }
+          console.error(`Error al iniciar sesión: ${errorMessage}`);
+          return { success: false, message: errorMessage };
+      }
+        const data = await response.text();
+        localStorage.setItem('token', data);
+        console.log("Inicio de sesion exitoso",data)
         return { success: true, data };
     }
         catch(error){

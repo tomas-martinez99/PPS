@@ -7,10 +7,10 @@ import { AuthenticationContext } from '../../../services/Authentication.context'
 import "./LoginUser.css"
 
 const LoginUser = () => {
-  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({ user: false, password: false, exist: false, notFunction: false });
-  const userRef = useRef(null);
+  const [errors, setErrors] = useState({ email: false, password: false, exist: false, notFunction: false });
+  const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const navigate = useNavigate();
   const { handleLogin } = useContext(AuthenticationContext)
@@ -18,9 +18,9 @@ const LoginUser = () => {
   const handlesumbit = (e) => {
     e.preventDefault();
 
-    if (!userRef.current.value) {
-      userRef.current.focus();
-      setErrors({ ...errors, user: true });
+    if (!emailRef.current.value) {
+      emailRef.current.focus();
+      setErrors({ ...errors, email: true });
       return;
     }
 
@@ -29,13 +29,13 @@ const LoginUser = () => {
       setErrors({ ...errors, password: true });
       return
     }
-    loginHandler(userRef.current.value, passwordRef.current.value)
+    loginHandler(emailRef.current.value, passwordRef.current.value)
 
   }
 
-  const changeUserHandler = () => {
-    setErrors((prevErrors) => ({ ...prevErrors, user: false }));
-    setUser(userRef.current.value);
+  const changeEmailHandler = () => {
+    setErrors((prevErrors) => ({ ...prevErrors, email: false }));
+    setEmail(emailRef.current.value);
   };
 
   const changePasswordHandler = (event) => {
@@ -43,13 +43,13 @@ const LoginUser = () => {
     setPassword(event.target.value);
   };
 
-  const loginHandler = async (user, password) => {
+  const loginHandler = async (email, password) => {
 
     try {
-      const response = await loginUser(user, password);
+      const response = await loginUser(email, password);
       if (response.success) {
         const user = response.data
-        handleLogin(user.username,user.rol,user.email,user.filmsFav,user.status,user.firstName,user.lastName)
+        handleLogin(user.username,user.rol,user.email,user.filmsFav,user.status)
         navigate("/")
         console.log("user", user)
 
@@ -74,15 +74,15 @@ const LoginUser = () => {
           <Form className="text-center">
             <Form.Text>Iniciar Secion</Form.Text>
             <Form.Group className="mb-3" controlId="formBasicuser">
-              <FloatingLabel label="Ingresar su Usuario" className="mb-3">
+              <FloatingLabel label="Ingresar su Email" className="mb-3">
                 <Form.Control
-                  type="text"
+                  type="email"
                   placeholder=""
                   required
-                  onChange={changeUserHandler}
-                  ref={userRef}
-                  value={user}
-                  className={errors.user && "border border-danger"}
+                  onChange={changeEmailHandler}
+                  ref={emailRef}
+                  value={email}
+                  className={errors.email && "border border-danger"}
                 />
               </FloatingLabel>
             </Form.Group>
