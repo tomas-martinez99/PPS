@@ -6,21 +6,15 @@ import "./Register.css"
 import { registerUser } from '../../../services/apiServices';
 
 const initialRegisterUserForm = {
-  firstName: "",
-  lastName: "",
   userName: "",
   email: "",
   password: "",
   confirmPassword: "",
-  telephone: "",
   errors: {
-    firstName: false,
-    lastName: false,
     userName: false,
     email: false,
     password: false,
     confirmPassword: false,
-    telephone: false,
     passwordMatch: false,
   },
 };
@@ -34,13 +28,10 @@ const newRegisterUserFormReducer = (state, action) => {
       };
     case "VALIDATE_FIELDS": {
       const newErrors = {
-        firstName: !state.firstName,
-        lastName: !state.lastName,
         userName: !state.userName,
         email: !state.email,
         password: !state.password,
         confirmPassword: !state.confirmPassword,
-        telephone: !state.telephone,
         passwordMatch: state.password !== state.confirmPassword
       };
       return {
@@ -69,13 +60,10 @@ const Register = () => {
 
     dispatch({ type: "VALIDATE_FIELDS" });
     const newErrors = {
-      firstName: !newRegisterUserForm.firstName,
-      lastName: !newRegisterUserForm.lastName,
       userName: !newRegisterUserForm.userName,
       email: !newRegisterUserForm.email,
       password: !newRegisterUserForm.password,
       confirmPassword: !newRegisterUserForm.confirmPassword,
-      telephone: !newRegisterUserForm.telephone,
       passwordMatch: newRegisterUserForm.password !== newRegisterUserForm.confirmPassword
     };
 
@@ -92,13 +80,10 @@ const Register = () => {
 
     if (!hasErrors) {
       const newRegisterUserFormData = {
-        firstName: newRegisterUserForm.firstName,
-        lastName: newRegisterUserForm.lastName,
         userName: newRegisterUserForm.userName,
         email: newRegisterUserForm.email,
         password: newRegisterUserForm.password,
         confirmPassword: newRegisterUserForm.confirmPassword,
-        telephone: newRegisterUserForm.telephone,
         rol: 2,
         filmsFav: [],
       }
@@ -138,28 +123,6 @@ const Register = () => {
         <Card.Body>
           <Form className="text-center" onSubmit={submitNewRegisterUserHandler}>
             <h1>Registrarse</h1>
-            <Form.Group className="mb-3" controlId="formBasicFirstName">
-              <FloatingLabel controlId="floatingFirstName" label="Ingresar su Nombre" className="mb-3">
-                <Form.Control
-                  type="text"
-                  placeholder=""
-                  value={newRegisterUserForm.firstName}
-                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "firstName", value: e.target.value })}
-                  className={newRegisterUserForm.errors.firstName ? 'is-invalid' : ''}
-                />
-              </FloatingLabel>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicLastName">
-              <FloatingLabel controlId="floatingLastName" label="Ingresar su Apellido" className="mb-3">
-                <Form.Control
-                  type="text"
-                  placeholder=""
-                  value={newRegisterUserForm.lastName}
-                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "lastName", value: e.target.value })}
-                  className={newRegisterUserForm.errors.lastName ? 'is-invalid' : ''}
-                />
-              </FloatingLabel>
-            </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicUserName">
               <FloatingLabel controlId="floatingUserName" label="Ingresar Nombre de Usuario" className="mb-3">
                 <Form.Control
@@ -168,17 +131,6 @@ const Register = () => {
                   value={newRegisterUserForm.userName}
                   onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "userName", value: e.target.value })}
                   className={newRegisterUserForm.errors.userName ? 'is-invalid' : ''}
-                />
-              </FloatingLabel>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicTelephone">
-              <FloatingLabel controlId="floatingTelephone" label="Ingresar su Numeor de Telefono" className="mb-3">
-                <Form.Control
-                  type="tel"
-                  placeholder=""
-                  value={newRegisterUserForm.telephone}
-                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "telephone", value: e.target.value })}
-                  className={newRegisterUserForm.errors.telephone ? 'is-invalid' : ''}
                 />
               </FloatingLabel>
             </Form.Group>

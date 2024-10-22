@@ -57,11 +57,7 @@ function Header() {
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex flex-shrink-0 items-center">
-              <img
-                alt="Your Company"
-                src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
-                className="h-8 w-auto"
-              />
+              <h1>Movie Wacha</h1>
             </div>
             {user?.rol === 0 ? 
               <Menu as="div" className="relative inline-block text-left sm:ml-4 ">

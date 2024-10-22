@@ -17,7 +17,8 @@ export const AuthenticationContextProvider = ({ children }) => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem('token');  // Elimina el token
+    console.log("Cierre de sesión exitoso");
     setUser(null);
   };
 
