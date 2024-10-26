@@ -1,19 +1,24 @@
-import React, { useContext, useRef, useState } from 'react'
-import PropTypes from 'prop-types'
-import { loginUser } from "../../../services/apiServices"
+import React, { useContext, useRef, useState } from "react";
+import PropTypes from "prop-types";
+import { loginUser } from "../../../services/apiServices";
 import { Alert, Button, Form, FloatingLabel, Card } from "react-bootstrap";
-import { useNavigate } from 'react-router-dom';
-import { AuthenticationContext } from '../../../services/Authentication.context';
-import "./LoginUser.css"
+import { useNavigate } from "react-router-dom";
+import { AuthenticationContext } from "../../../services/Authentication.context";
+import "./LoginUser.css";
 
 const LoginUser = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({ email: false, password: false, exist: false, notFunction: false });
+  const [errors, setErrors] = useState({
+    email: false,
+    password: false,
+    exist: false,
+    notFunction: false,
+  });
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const navigate = useNavigate();
-  const { handleLogin } = useContext(AuthenticationContext)
+  const { handleLogin } = useContext(AuthenticationContext);
 
   const handlesumbit = (e) => {
     e.preventDefault();
@@ -27,11 +32,10 @@ const LoginUser = () => {
     if (!passwordRef.current.value) {
       passwordRef.current.focus();
       setErrors({ ...errors, password: true });
-      return
+      return;
     }
-    loginHandler(emailRef.current.value, passwordRef.current.value)
-
-  }
+    loginHandler(emailRef.current.value, passwordRef.current.value);
+  };
 
   const changeEmailHandler = () => {
     setErrors((prevErrors) => ({ ...prevErrors, email: false }));
@@ -44,35 +48,37 @@ const LoginUser = () => {
   };
 
   const loginHandler = async (email, password) => {
-
     try {
       const response = await loginUser(email, password);
       if (response.success) {
-        const user = response.data
-        handleLogin(user.username,user.rol,user.email,user.filmsFav,user.status)
-        navigate("/")
-        console.log("user", user)
-
-
+        const user = response.data;
+        handleLogin(
+          user.username,
+          user.rol,
+          user.email,
+          user.filmsFav,
+          user.status
+        );
+        navigate("/");
+        console.log("user", user);
       } else {
-        setErrors({ ...errors, exist: true })
-
+        setErrors({ ...errors, exist: true });
       }
     } catch (error) {
       console.error("Error al iniciar sesion:", error);
-      setErrors({ ...errors, notFunction: true }
-
-
-      )
+      setErrors({ ...errors, notFunction: true });
     }
-  }
+  };
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
-      <Card className="p-4 px-5 shadow" style={{ width: "500px", height: "400px", color: "white" }}>
+      <Card
+        className="p-4 px-5 shadow"
+        style={{ width: "500px", height: "400px", color: "white" }}
+      >
         <Card.Body>
           <Form className="text-center">
-            <Form.Text>Iniciar Secion</Form.Text>
+            <Form.Text>Iniciar Sesion</Form.Text>
             <Form.Group className="mb-3" controlId="formBasicuser">
               <FloatingLabel label="Ingresar su Email" className="mb-3">
                 <Form.Control
@@ -87,7 +93,10 @@ const LoginUser = () => {
               </FloatingLabel>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <FloatingLabel controlId="floatingPassword" label="Ingresar su contraseña">
+              <FloatingLabel
+                controlId="floatingPassword"
+                label="Ingresar su contraseña"
+              >
                 <Form.Control
                   placeholder="Password"
                   className={errors.password && "border border-danger"}
@@ -106,17 +115,32 @@ const LoginUser = () => {
                 </Alert>
               </div>
             )}
-            <Button className='custom-button-login' type="submit" onClick={handlesumbit} >
+            <Button
+              className="custom-button-login"
+              type="submit"
+              onClick={handlesumbit}
+            >
               Iniciar Sesión
             </Button>
-            <h6>No tenes una cuenta creada?<Button variant="link" className="fw-bold pt-1" onClick={() => { navigate("/register") }}>Creá tu cuenta</Button></h6>
+            <h6>
+              No tenes una cuenta creada?
+              <Button
+                variant="link"
+                className="fw-bold pt-1"
+                onClick={() => {
+                  navigate("/register");
+                }}
+              >
+                Creá tu cuenta
+              </Button>
+            </h6>
           </Form>
         </Card.Body>
       </Card>
     </div>
-  )
-}
+  );
+};
 
-LoginUser.propTypes = {}
+LoginUser.propTypes = {};
 
-export default LoginUser
+export default LoginUser;

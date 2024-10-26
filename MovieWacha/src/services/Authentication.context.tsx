@@ -10,14 +10,32 @@ const userValue = userValueString ? JSON.parse(userValueString) : null;
 export const AuthenticationContextProvider = ({ children }) => {
   const [user, setUser] = useState(userValue);
 
-  const handleLogin = (username,rol,email,filmsFav,status,firstName,lastName) => {
-    localStorage.setItem("user", JSON.stringify({ username,rol,email,status,filmsFav,firstName,lastName }));
-    setUser({ username,rol,email,status,filmsFav,firstName,lastName});
-    
+  const handleLogin = (
+    username,
+    rol,
+    email,
+    filmsFav,
+    status,
+    firstName,
+    lastName
+  ) => {
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        username,
+        rol,
+        email,
+        status,
+        filmsFav,
+        firstName,
+        lastName,
+      })
+    );
+    setUser({ username, rol, email, status, filmsFav, firstName, lastName });
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');  // Elimina el token
+    localStorage.removeItem("token"); // Elimina el token
     console.log("Cierre de sesión exitoso");
     setUser(null);
   };

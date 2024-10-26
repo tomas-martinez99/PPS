@@ -1,0 +1,19 @@
+.navbar {
+  background-color: transparent;
+  height: 75px;
+  font-size: 20px;
+}
+
+.logo {
+  width: 70px;
+  cursor: pointer;
+}
+
+.login:hover {
+  background-color: #7470ff;
+}
+
+.active {
+  color: white;
+  text-shadow: 3px 3px 6px #7470ff;
+}
