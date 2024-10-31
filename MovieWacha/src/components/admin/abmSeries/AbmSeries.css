@@ -1,0 +1,93 @@
+/* Container */
+.table-container {
+    padding: 20px;
+    background-color: #1f2937;
+    color: #f1f5f9;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Add button */
+  .add-button {
+    background-color: #6366f1;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Table Header */
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  /* Search input */
+  .search-input {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #4b5563;
+    background-color: #374151;
+    color: #d1d5db;
+  }
+  
+  /* Table Styles */
+  .series-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .series-table th,
+  .series-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #374151;
+  }
+  
+  /* Row styles */
+  .row-series {
+    background-color: #374151;
+  }
+  
+  .row-season {
+    background-color: #5f634b;
+  }
+  
+  .row-episode {
+    background-color: #55334f;
+  }
+  
+  /* Action buttons */
+  .action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .edit-btn,
+  .delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #9ca3af;
+  }
+  
+  .edit-btn:hover,
+  .delete-btn:hover {
+    color: #fff;
+  }
+  
+  /* Arrow icons for expanding/collapsing */
+  button {
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    color: #fff;
+  }
+  

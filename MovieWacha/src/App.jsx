@@ -9,40 +9,32 @@ import RegisterSuccess from "./components/login/registerSuccess/RegisterSuccess"
 import Home from "./components/reproduction/home/home";
 import Movies from "./components/reproduction/movies/Movies";
 import Series from "./components/reproduction/series/Series";
+import AbmSeries from "./components/admin/abmSeries/AbmSeries";
+import SelectPlan from "./components/suscripcion/selectPlan/SelectPlan";
+import ConfirmPlan from "./components/suscripcion/confirmPlan/ConfirmPlan";
+import PaymentSuccess from "./components/suscripcion/payment/PaymentSuccess";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: (
-        <MainLayout>
-          <Home />
-        </MainLayout>
-      ),
+      element:<MainLayout><Home /></MainLayout>
+    },
+    {
+      path:"/payment/success",
+      element:<MainLayout><PaymentSuccess/></MainLayout>
     },
     {
       path: "/login",
-      element: (
-        <MainLayout>
-          <LoginUser />
-        </MainLayout>
-      ),
+      element:<MainLayout><LoginUser /></MainLayout>
     },
     {
       path: "/register",
-      element: (
-        <MainLayout>
-          <Register />
-        </MainLayout>
-      ),
+      element:<MainLayout><Register /></MainLayout>
     },
     {
       path: "/registerSuccess",
-      element: (
-        <MainLayout>
-          <RegisterSuccess />
-        </MainLayout>
-      ),
+      element: <MainLayout><RegisterSuccess /></MainLayout>
     },
     {
       path: "/profile",
@@ -64,6 +56,20 @@ function App() {
       path: "/newSerie",
       element: <MainLayout>{/* <NewSerie/> */}</MainLayout>,
     },
+    {
+      path: "/abmSeries",
+      element: <MainLayout><AbmSeries/></MainLayout>,
+    },
+    {
+      path: "/selectPlan",
+      element: <MainLayout><SelectPlan/></MainLayout>,
+    },
+    {
+      path: "/confirmPlan",
+      element: <MainLayout><ConfirmPlan/></MainLayout>,
+    },
+    
+
   ]);
 
   return <RouterProvider router={router} />;
