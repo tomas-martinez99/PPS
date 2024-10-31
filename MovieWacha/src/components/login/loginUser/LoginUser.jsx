@@ -1,10 +1,12 @@
 import React, { useContext, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { loginUser } from "../../../services/apiServices";
-import { Alert, Button, Form, FloatingLabel, Card } from "react-bootstrap";
+import { Alert, Button, Form, FloatingLabel, Card, FormLabel } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AuthenticationContext } from "../../../services/Authentication.context";
 import "./LoginUser.css";
+
+
 
 const LoginUser = () => {
   const [email, setEmail] = useState("");
@@ -73,14 +75,14 @@ const LoginUser = () => {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <Card
-        className="p-4 px-5 shadow"
+        className="p-4 px-5 shadow card-general"
         style={{ width: "500px", height: "400px", color: "white" }}
       >
         <Card.Body>
-          <Form className="text-center">
-            <Form.Text>Iniciar Sesion</Form.Text>
-            <Form.Group className="mb-3" controlId="formBasicuser">
-              <FloatingLabel label="Ingresar su Email" className="mb-3">
+          <Form className="text-center" >
+            <Form.Group className="mb-3" controlId="formBasicUserName">
+            <Form.Label className="Input-Label d-flex align-items-center">Usuario</Form.Label>
+
                 <Form.Control
                   type="email"
                   placeholder=""
@@ -88,25 +90,20 @@ const LoginUser = () => {
                   onChange={changeEmailHandler}
                   ref={emailRef}
                   value={email}
-                  className={errors.email && "border border-danger"}
+                  className={'dark-border ${errors.email ? "border-danger" : ""}'}
                 />
-              </FloatingLabel>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <FloatingLabel
-                controlId="floatingPassword"
-                label="Ingresar su contraseña"
-              >
+            <Form.Label className="Input-Label d-flex align-items-center">Contraseña</Form.Label>
                 <Form.Control
-                  placeholder="Password"
-                  className={errors.password && "border border-danger"}
+                  placeholder=""
+                  className={'dark-border ${errors.email ? "border-danger" : ""}'}
                   type="password"
                   required
                   onChange={changePasswordHandler}
                   value={password}
                   ref={passwordRef}
                 />
-              </FloatingLabel>
             </Form.Group>
             {errors.exist && (
               <div className="mt-3 mb-3">
@@ -120,20 +117,27 @@ const LoginUser = () => {
               type="submit"
               onClick={handlesumbit}
             >
-              Iniciar Sesión
+              Loguearme
             </Button>
-            <h6>
-              No tenes una cuenta creada?
+            <h6 className="h6">
+              No tenes una cuenta?
               <Button
                 variant="link"
                 className="fw-bold pt-1"
                 onClick={() => {
                   navigate("/register");
-                }}
-              >
-                Creá tu cuenta
+                }}>
+                Registrate
               </Button>
             </h6>
+            <Button
+                variant="link"
+                className="fw-bold pt-1"
+                onClick={() => {
+                  navigate("");
+                }}>
+                Olvidaste tu contraseña?
+              </Button>
           </Form>
         </Card.Body>
       </Card>

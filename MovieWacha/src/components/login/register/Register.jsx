@@ -61,15 +61,15 @@ const Register = () => {
     dispatch({ type: "VALIDATE_FIELDS" });
     const newErrors = {
       userName: !newRegisterUserForm.userName,
-      email: !newRegisterUserForm.email,
-      password: !newRegisterUserForm.password,
+      email: !newRegisterUserForm.Email,
+      password: !newRegisterUserForm.Password,
       confirmPassword: !newRegisterUserForm.confirmPassword,
-      passwordMatch: newRegisterUserForm.password !== newRegisterUserForm.confirmPassword
+      passwordMatch: newRegisterUserForm.Password !== newRegisterUserForm.confirmPassword
     };
 
     const hasErrors = Object.values(newErrors).some(error => error);
     if (hasErrors){
-      if (newRegisterUserForm.password !== newRegisterUserForm.confirmPassword) {
+      if (newRegisterUserForm.Password !== newRegisterUserForm.confirmPassword) {
         setShowPasswordMismatchAlert(true);
         return;
       }else{
@@ -122,9 +122,8 @@ const Register = () => {
       <Card className="p-4 px-5 shadow" style={{ width: "500px", height: "" }}>
         <Card.Body>
           <Form className="text-center" onSubmit={submitNewRegisterUserHandler}>
-            <h1>Registrarse</h1>
             <Form.Group className="mb-3" controlId="formBasicUserName">
-              <FloatingLabel controlId="floatingUserName" label="Ingresar Nombre de Usuario" className="mb-3">
+              <Form.Label className='input-label d-flex align-items-center'>Usuario</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder=""
@@ -132,32 +131,39 @@ const Register = () => {
                   onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "userName", value: e.target.value })}
                   className={newRegisterUserForm.errors.userName ? 'is-invalid' : ''}
                 />
-              </FloatingLabel>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <FloatingLabel controlId="floatingEmail" label="Ingresar su Email" className="mb-3">
+            <Form.Group className="mb-3" controlId="formBasicName">
+            <Form.Label className='input-label d-flex align-items-center'>Nombre</Form.Label>
                 <Form.Control
-                  type="email"
+                  type="text"
                   placeholder=""
-                  value={newRegisterUserForm.email}
-                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "email", value: e.target.value })}
+                  value={newRegisterUserForm.name}
+                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "Name", value: e.target.value })}
                   className={newRegisterUserForm.errors.email ? 'is-invalid' : ''}
                 />
-              </FloatingLabel>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <FloatingLabel controlId="floatingPassword" label="Ingresar su Contraseña">
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label className='input-label d-flex align-items-center'>Email</Form.Label>
                 <Form.Control
-                  type='password'
+                  type='email'
                   placeholder=""
-                  value={newRegisterUserForm.password}
-                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "password", value: e.target.value })}
+                  value={newRegisterUserForm.Email}
+                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "Email", value: e.target.value })}
                   className={newRegisterUserForm.errors.password || newRegisterUserForm.errors.passwordMatch ? 'is-invalid' : ''}
                 />
-              </FloatingLabel>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label className='input-label d-flex align-items-center'>Contraseña</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder=""
+                  value={newRegisterUserForm.Password}
+                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "Password", value: e.target.value })}
+                  className={newRegisterUserForm.errors.confirmPassword || newRegisterUserForm.errors.passwordMatch ? 'is-invalid' : ''}
+                />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicComfirmPassword">
-              <FloatingLabel controlId="floatingComfirmPassword" label="Confirmar Contraseña" className="mb-3">
+              <Form.Label className='input-label d-flex align-items-center'>Confirmar Contraseña</Form.Label>
                 <Form.Control
                   type="password"
                   placeholder=""
@@ -165,7 +171,6 @@ const Register = () => {
                   onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "confirmPassword", value: e.target.value })}
                   className={newRegisterUserForm.errors.confirmPassword || newRegisterUserForm.errors.passwordMatch ? 'is-invalid' : ''}
                 />
-              </FloatingLabel>
             </Form.Group>
             {showPasswordMismatchAlert && (
               <Alert variant="danger" onClose={() => setShowPasswordMismatchAlert(false)} dismissible>
@@ -178,8 +183,10 @@ const Register = () => {
               </Alert>
             )}
             <Button className='custom-button-register' type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Registrando...' : 'Crear cuenta'}
+              {isSubmitting ? 'Registrando...' : 'Registrarme'}
             </Button>
+            <h6 className="h6">¿Ya tenés una cuenta?<Button variant="link" className="fw-bold pt-1" onClick={() => { navigate("/login");}}>Logueate</Button>
+            </h6>
           </Form>
         </Card.Body>
       </Card>

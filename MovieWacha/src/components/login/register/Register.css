@@ -1,8 +1,9 @@
 .custom-button-register {
-    background-color: #A9CCE3; /* Azul claro frío */
-    color: #1C2833; /* Verde oscuro apagado */
+    background-color: #1929B6; /* Azul claro frío */
+    color: #ffffff; /* Verde oscuro apagado */
     border-color: #A9CCE3;
-
+    font-weight: bold;
+    width: 100%;
 }
 .custom-button-register:hover {
     background-color: #1C2833;
@@ -13,3 +14,7 @@
 .is-invalid {
     border-color: red;
   }
+
+.input-label{
+    color: #000000;
+}
