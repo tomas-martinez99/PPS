@@ -24,7 +24,7 @@ const ConfirmPlan = () => {
                     <li>Pantallas ilimitadas</li>
                 </ul>
                     <div id="wallet_container">
-                    <Wallet initialization={{ preferenceId:"2029783441-35ed010e-cdde-4d0c-b5ce-09b65c55d33e" }} >
+                    <Wallet initialization={{ preferenceId:"2029783441-ffba5d31-690e-44f1-9b13-12e46e8b36b2" }} >
                         Ir a mercado pago
                     </Wallet>
                     </div>

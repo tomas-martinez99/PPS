@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import "./AbmSeries.css"
-import ModalAdd from '../modalAdd-Edit/ModalAdd';
+import ModalAddSeries from '../modalAdd-Edit/ModalAddSeries';
 import { getSeries } from '../../../services/seriesServices';
 import AbmSeason from '../abmSeason/AbmSeason';
+import ModalAddSeason from '../modalAdd-Edit/ModalAddSeason';
 
 const AbmSeries = () => {
     const [searchTerm, setSearchTerm] = useState('');//Estado buscador
     const [expandedSeries, setExpandedSeries] = useState({})//Estados Mostrar temporadas
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });// Estado orden
     const [isModalAddOpen, setModalAddOpen] = useState(false); // Estado ModalAdd
-    const [editData, setEditData] = useState(null); // Estado para datos de edición
     const [series, setSeries] = useState([])
-
+    const [isModalAddSeason, setModalAddSeason] = useState(false)
+    const [selectedSerieId, setSelectedSerieId] = useState(null);
     
     //LLamado a la api
     useEffect(() => {
@@ -31,14 +32,19 @@ const AbmSeries = () => {
     }, []);
 
     //Funciones Abrir/Cerrar Modal
-    const handleOpenModalAdd = (data = null) => {
-        setEditData(data);
+    const handleOpenModalAdd = () => { 
         setModalAddOpen(true);
     }
-    const handleCloseModalAdd = () => {
-        setEditData(null);
+    const handleCloseModalAdd = () => { 
         setModalAddOpen(false);
     }
+    const handleCloseModalAddSeason = () => { 
+        setModalAddSeason(false);
+    }
+    const handleOpenModalAddSeason = (id) => {
+        setSelectedSerieId(id);
+        setModalAddSeason(true);
+    };
 
     //Mostrar las temporadas
     const toggleSeries = (seriesId) => {
@@ -46,6 +52,7 @@ const AbmSeries = () => {
             ...prev,
             [seriesId]: !prev[seriesId],
         }));
+        console.log(seriesId)
     };
 
     
@@ -82,10 +89,10 @@ const AbmSeries = () => {
     
     return (
         <div className="table-container">
-            <button className="add-button" onClick={handleOpenModalAdd}>Agregar</button>
+            {isModalAddSeason ? <ModalAddSeason onClose={handleCloseModalAddSeason} id={selectedSerieId}/>: ""}
+            <button className="add-button" onClick={handleOpenModalAdd}>Agregar Series</button>
             {isModalAddOpen ?
-                <ModalAdd onClose={handleCloseModalAdd} editData={editData} />
-                :
+                <ModalAddSeries onClose={handleCloseModalAdd}  /> :
                 <>
                     <div className="table-header">
                         <h2>Series</h2>
@@ -109,7 +116,6 @@ const AbmSeries = () => {
                         <tbody>
                             {sortedSeries.map((series) => (
                                 <React.Fragment key={series.id}>
-                                    {/* Series Row */}
                                     <tr className="row-series">
                                         <td>{series.id}</td>
                                         <td>{series.title}</td>
@@ -118,22 +124,18 @@ const AbmSeries = () => {
                                             <button onClick={() => toggleSeries(series.id)}>
                                                 {expandedSeries[series.id] ? '▲' : '▼'}
                                             </button>
-                                            <button className="edit-btn" onClick={() => handleOpenModalAdd(series)}>✏️</button>
+                                            <button className="edit-btn" >✏️</button>
                                             <button className="delete-btn">🗑️</button>
+                                            <button className='add-btn' onClick={() => handleOpenModalAddSeason(series.id)}>+</button>
                                         </td>
                                     </tr>
-                                    {/* Seasons Rows */}
-                                    {expandedSeries[series.id] &&
-                                        series.seasons.map((season) => (
-                                                <AbmSeason key={season.id} season={season}/>
-                                              
-                                        ))}
+                                    {expandedSeries[series.id] ? <AbmSeason serieId={series.id}/> : ""}
                                 </React.Fragment>
                             ))}
                         </tbody>
                     </table>
                 </>
-            }
+                }
         </div>
 
     );
