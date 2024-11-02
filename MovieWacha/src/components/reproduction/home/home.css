@@ -1,0 +1,38 @@
+.caption-center-left {
+    position: absolute;
+    left: 15px;
+    bottom: 20px;
+    text-align: left;
+    background-color: rgba(10, 7, 7, 0.788);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    transform: translateY(-50%);
+    top: 50%;
+    width: 20%;
+    height: 80%;
+}
+
+.see-button {
+    background-color: #6365f1d2;
+    color: #fff;
+    margin-top: 100%;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 10px 20px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.see-button:hover {
+    background-color: transparent;
+    border-color: #fff;
+    color: #fff;
+}
+
+.carousel-control-prev{
+    width: 5%;
+}
+
+.carousel-control-next{
+    width: 5%;
+}

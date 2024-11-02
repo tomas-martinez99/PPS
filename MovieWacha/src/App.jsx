@@ -6,13 +6,14 @@ import MainLayout from "./components/layout/MainLayout";
 import LoginUser from "./components/login/loginUser/LoginUser";
 import Register from "./components/login/register/register";
 import RegisterSuccess from "./components/login/registerSuccess/RegisterSuccess";
-import Home from "./components/reproduction/home/home";
+import Home from "./components/reproduction/home/Home";
 import Movies from "./components/reproduction/movies/Movies";
 import Series from "./components/reproduction/series/Series";
 import AbmSeries from "./components/admin/abmSeries/AbmSeries";
 import SelectPlan from "./components/suscripcion/selectPlan/SelectPlan";
 import ConfirmPlan from "./components/suscripcion/confirmPlan/ConfirmPlan";
 import PaymentSuccess from "./components/suscripcion/payment/PaymentSuccess";
+import WatchMovie from "./components/WatchMovie/WatchMovie";
 
 function App() {
   const router = createBrowserRouter([
@@ -68,8 +69,10 @@ function App() {
       path: "/confirmPlan",
       element: <MainLayout><ConfirmPlan/></MainLayout>,
     },
-    
-
+    {
+      path: "/watch/:movieId",
+      element: <MainLayout><WatchMovie /></MainLayout>
+    },
   ]);
 
   return <RouterProvider router={router} />;
