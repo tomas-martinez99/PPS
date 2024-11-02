@@ -10,7 +10,7 @@ export const successPay = async (paymentId) =>{
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}` 
               },
-              body: paymentId
+              body: Number(paymentId)
         })
         if(response.ok){
             console.log("Pagaste")
