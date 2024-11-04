@@ -1,38 +1,69 @@
+.carousel-container {
+  margin-bottom: 40px;
+}
+
 .caption-center-left {
-    position: absolute;
-    left: 15px;
-    bottom: 20px;
-    text-align: left;
-    background-color: rgba(10, 7, 7, 0.788);
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    transform: translateY(-50%);
-    top: 50%;
-    width: 20%;
-    height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  left: 0px;
+  background-color: rgba(10, 7, 7, 0.788);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  transform: translateY(-50%);
+  top: 50%;
+  width: 25%;
+  height: 100%;
 }
 
 .see-button {
-    background-color: #6365f1d2;
-    color: #fff;
-    margin-top: 100%;
-    border: 2px solid transparent;
-    border-radius: 10px;
-    padding: 10px 20px;
-    transition: background-color 0.3s, border-color 0.3s;
+  width: 100%;
+  background-color: #6365f1d2;
+  color: #fff;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 10px 20px;
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
 .see-button:hover {
-    background-color: transparent;
-    border-color: #fff;
-    color: #fff;
+  background-color: transparent;
+  border-color: #fff;
+  color: #fff;
 }
 
-.carousel-control-prev{
-    width: 5%;
+.add-list-button {
+  width: 75%;
+  background-color: transparent;
+  border-color: #fff;
+  color: #fff;
+  border: 2px solid #3a4758;
+  border-radius: 10px;
+  padding: 10px 20px;
+  transition: background-color 0.3s, border-color 0.3s;
+  justify-self: flex-end;
 }
 
-.carousel-control-next{
-    width: 5%;
+.add-list-button:hover {
+  background-color: #18202b;
+  border: 2px solid transparent;
+}
+
+.carousel-control-prev {
+  width: 5%;
+}
+
+.carousel-control-next {
+  width: 5%;
+}
+
+.sinopsis {
+  text-align: end;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
 }

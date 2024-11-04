@@ -1,0 +1,16 @@
+.search-container {
+  margin: 30px;
+}
+
+.results-container {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(200px, 1fr)
+  ); /* Ajusta el tamaño mínimo según tus necesidades */
+  gap: 16px; /* Espaciado entre las tarjetas */
+}
+
+.results-container p {
+  text-align: center;
+}

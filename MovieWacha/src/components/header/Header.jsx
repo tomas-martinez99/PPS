@@ -16,6 +16,10 @@ const Header = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [showMyList, setShowMyList] = useState(false);
 
+  const [scrolled, setScrolled] = useState(false);
+
+  const [enteredSearch, setEnteredSearch] = useState("");
+
   const [navLinkSelected, setNavLinkSelected] = useState("");
 
   const isLogged = true; // FALTA CONTEXT
@@ -44,10 +48,27 @@ const Header = () => {
     navigate("/login");
   };
 
+  const handleScroll = () => {
+    setScrolled(window.scrollY > 50);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleSearch = async (e) => {
+    if (e.keyCode === 13 && enteredSearch.length > 0) {
+      navigate(`/search-results/${enteredSearch}`);
+    }
+  };
+
   return (
     <Navbar
       expand="lg"
-      className="navbar"
+      className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}
       data-bs-theme="dark"
       style={{ position: "sticky", zIndex: 100, width: "100%", top: 0.1 }}
     >
@@ -107,9 +128,8 @@ const Header = () => {
                   minWidth: "250px",
                   maxWidth: "100%",
                 }}
-                //onChange={(e) => setEnteredSearch(e.target.value)}
-                //value={enteredSearch}
-                //onKeyDown={(e) => handleSearch(e, "keyDown")}
+                onChange={(e) => setEnteredSearch(e.target.value)}
+                onKeyDown={(e) => handleSearch(e)}
               />
             )}
             <Button

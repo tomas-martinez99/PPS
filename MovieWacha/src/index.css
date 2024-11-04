@@ -1,0 +1,8 @@
+html {
+  overflow-y: scroll; /* Mantiene el scroll habilitado */
+  scrollbar-width: none; /* Para Firefox */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Para Chrome y Safari */
+}

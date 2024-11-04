@@ -18,9 +18,6 @@ export const getMovies = async () => {
   }
 };
 
-
-
-
 export const deleteMovie = async (id) => {
   const response = await fetch(`${API_URL}/MOVIES/${id}`, { method: "DELETE" });
   if (!response.ok) {
@@ -52,5 +49,43 @@ export const deleteEpisode = async (serieId, seasonId, episodeId) => {
   );
   if (!response.ok) {
     throw new Error("Error al eliminar el episodio");
+  }
+};
+
+export const getMovieByGenre = async (genre) => {
+  try {
+    console.log(genre);
+    const response = await fetch(
+      `${API_URL}/movies/get-movies-by-genre/${genre}`,
+      {
+        method: "GET",
+        mode: "cors",
+      }
+    );
+    if (!response.ok) {
+      throw new Error("No se han encontrado peliculas con el genero");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const search = async (title) => {
+  try {
+    const response = await fetch(`${API_URL}/search/by-title?Title=${title}`, {
+      method: "GET",
+      mode: "cors",
+    });
+    if (!response.ok) {
+      throw new Error("No hay resultados");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
   }
 };

@@ -2,6 +2,11 @@
   background-color: transparent;
   height: 75px;
   font-size: 20px;
+  transition: background-color 0.2s;
+}
+
+.navbar-scrolled {
+  background-color: rgba(0, 0, 0, 0.85);
 }
 
 .logo {
@@ -11,9 +16,4 @@
 
 .login:hover {
   background-color: #7470ff;
-}
-
-.active {
-  color: white;
-  text-shadow: 3px 3px 6px #7470ff;
 }
