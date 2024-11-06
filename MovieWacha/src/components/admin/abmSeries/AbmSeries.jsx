@@ -150,9 +150,9 @@ const AbmSeries = () => {
                                             <button onClick={() => toggleSeries(series.id)}>
                                                 {expandedSeries[series.id] ? '▲' : '▼'}
                                             </button>
-                                            <button className="edit-btn" onClick={() => handleEditSerie(series)} >✏️</button>
-                                            <button className="delete-btn" onClick={() => handleDeletSerie(series.id)}>🗑️</button>
-                                            <button className='add-btn' onClick={() => handleOpenModalAddSeason(series.id)}>+</button>
+                                            <button className="edit-btn" onClick={() => handleEditSerie(series)} ><i className="fa-solid fa-pen"></i></button>
+                                            <button className="delete-btn" onClick={() => handleDeletSerie(series.id)}><i className="fa-solid fa-trash"></i></button>
+                                            <button className='add-btn' onClick={() => handleOpenModalAddSeason(series.id)}><i className="fa-solid fa-plus"></i></button>
                                         </td>
                                     </tr>
                                     {expandedSeries[series.id] && <AbmSeason serieId={series.id} />}

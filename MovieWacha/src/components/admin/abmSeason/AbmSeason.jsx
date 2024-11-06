@@ -41,9 +41,9 @@ const AbmSeason = ({ serieId }) => {
                             <button onClick={() => toggleSeason(season.id)}>
                                 {expandedSeasons[season.id] ? '▲' : '▼'}
                             </button>
-                            <button className="edit-btn" >✏️</button>
-                            <button className="delete-btn">🗑️</button>
-                            <button className='add-btn'>+</button>
+                            <button className="edit-btn" ><i className="fa-solid fa-pen"></i></button>
+                            <button className="delete-btn"><i className="fa-solid fa-trash"></i></button>
+                            <button className='add-btn'><i className="fa-solid fa-plus"></i></button>
                         </td>
                     </tr>
                     {expandedSeasons[season.id] && (

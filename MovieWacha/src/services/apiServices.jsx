@@ -26,7 +26,7 @@ export const loginUser = async (email, password) => {
       return { success: false, message: errorMessage };
     }
     const data = await response.text();
-    localStorage.setItem("token",data );
+    // localStorage.setItem("token",data );
     console.log("Inicio de sesion exitoso", data);
     return { success: true, data };
   } catch (error) {

@@ -17,6 +17,8 @@ import WatchMovie from "./components/WatchMovie/WatchMovie";
 import PreReproMovie from "./components/reproduction/pre-repro/PreReproMovie";
 import PreReproSerie from "./components/reproduction/pre-repro/preReroSerie";
 import SearchResults from "./components/search-results/SearchResults";
+import ProtectedAdmin from "./protected/ProtectedAdmin";
+import UserNotPermis from "./components/pages/UserNotPermis";
 
 function App() {
   const router = createBrowserRouter([
@@ -81,14 +83,12 @@ function App() {
       element: <MainLayout>{/* <Statistics/> */}</MainLayout>,
     },
     {
-      path: "/newSerie",
-      element: <MainLayout>{/* <NewSerie/> */}</MainLayout>,
-    },
-    {
       path: "/abmSeries",
       element: (
         <MainLayout>
+          <ProtectedAdmin>
           <AbmSeries />
+          </ProtectedAdmin>
         </MainLayout>
       ),
     },
@@ -137,6 +137,14 @@ function App() {
       element: (
         <MainLayout>
           <SearchResults />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/userNotPermis",
+      element: (
+        <MainLayout>
+          <UserNotPermis/>
         </MainLayout>
       ),
     },

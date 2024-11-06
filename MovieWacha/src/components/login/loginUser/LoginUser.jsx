@@ -54,15 +54,12 @@ const LoginUser = () => {
       const response = await loginUser(email, password);
       if (response.success) {
         const user = response.data;
+        console.log("user", user);
         handleLogin(
-          user.username,
-          user.rol,
-          user.email,
-          user.filmsFav,
-          user.status
+          user
         );
         navigate("/");
-        console.log("user", user);
+        
       } else {
         setErrors({ ...errors, exist: true });
       }

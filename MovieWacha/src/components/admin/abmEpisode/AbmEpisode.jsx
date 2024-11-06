@@ -29,8 +29,8 @@ const AbmEpisode = ({ idSeason }) => {
                     <td>↳ ↳ {episode.title}</td>
                     <td></td>
                     <td className="action-buttons">
-                        <button className="edit-btn" >✏️</button>
-                        <button className="delete-btn">🗑️</button>
+                        <button className="edit-btn" ><i className="fa-solid fa-pen"></i></button>
+                        <button className="delete-btn"><i className="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>)) : <tr className="row-episode">
                 <td className="row-episode"></td>
