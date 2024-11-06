@@ -16,7 +16,7 @@ const Home = () => {
       try {
         const result = await getMoviesShowCase();
         setMovieShowcase(result);
-        console.log(result);
+        console.log("Peliculas Cargada en home",result);
       } catch (error) {
         setError(error);
         console.error('There was a problem with the fetch operation:', error);

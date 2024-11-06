@@ -28,12 +28,7 @@ export const deleteMovie = async (id) => {
   }
 };
 
-export const deleteSerie = async (id) => {
-  const response = await fetch(`${API_URL}/series/${id}`, { method: "DELETE" });
-  if (!response.ok) {
-    throw new Error("Error al eliminar la serie");
-  }
-};
+
 
 export const deleteSeason = async (serieId, seasonId) => {
   const response = await fetch(

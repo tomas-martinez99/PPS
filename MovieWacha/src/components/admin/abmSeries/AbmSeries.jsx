@@ -2,19 +2,26 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import "./AbmSeries.css"
 import ModalAddSeries from '../modalAdd-Edit/ModalAddSeries';
-import { getSeries } from '../../../services/seriesServices';
+import { deleteSerie, getSeries } from '../../../services/seriesServices';
 import AbmSeason from '../abmSeason/AbmSeason';
 import ModalAddSeason from '../modalAdd-Edit/ModalAddSeason';
+
 
 const AbmSeries = () => {
     const [searchTerm, setSearchTerm] = useState('');//Estado buscador
     const [expandedSeries, setExpandedSeries] = useState({})//Estados Mostrar temporadas
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });// Estado orden
     const [isModalAddOpen, setModalAddOpen] = useState(false); // Estado ModalAdd
-    const [series, setSeries] = useState([])
-    const [isModalAddSeason, setModalAddSeason] = useState(false)
-    const [selectedSerieId, setSelectedSerieId] = useState(null);
-    
+    const [series, setSeries] = useState([])//Estado para las series cargadas
+    const [isModalAddSeason, setModalAddSeason] = useState(false)//Estado modal addSeason
+    const [selectedSerieId, setSelectedSerieId] = useState(null);//Id de la serie pasado al componente de las temporadas
+    const [reload, setReload] = useState(true);//estado de recarga
+    const [isModalEditOpen, setModalEditOpen] = useState(false);//Modal de edicion de series
+    const [selectedSerie, setSelectedSerie] = useState(null);//Pasaje de datos al modadal de edicion
+
+    const refreshPage = () => {
+        window.location.reload();
+    };
     //LLamado a la api
     useEffect(() => {
         // Función para cargar los datos
@@ -22,23 +29,38 @@ const AbmSeries = () => {
             try {
                 const result = await getSeries();
                 setSeries(result); // Guardar datos en el estado
-                console.log(result)
+                console.log("series Cargadas en el abm", result)
             } catch (err) {
                 console.log(err.message)
             }
         };
 
         fetchData();
-    }, []);
+    }, [reload]);
+
+    //Borrar serie
+    const handleDeletSerie = (id) => {
+        deleteSerie(id)
+        refreshPage()
+    }
+
+    //Edit serie
+    const handleEditSerie = (serie) => {
+        console.log(serie,"serie a editar")
+        setSelectedSerie(serie); // Guardar la serie seleccionada en el estado
+        setModalEditOpen(true);  // Abrir el modal de edición
+    };
 
     //Funciones Abrir/Cerrar Modal
-    const handleOpenModalAdd = () => { 
+    const handleOpenModalAdd = () => {
         setModalAddOpen(true);
+        setReload(!reload)
     }
-    const handleCloseModalAdd = () => { 
+    const handleCloseModalAdd = () => {
         setModalAddOpen(false);
+
     }
-    const handleCloseModalAddSeason = () => { 
+    const handleCloseModalAddSeason = () => {
         setModalAddSeason(false);
     }
     const handleOpenModalAddSeason = (id) => {
@@ -52,10 +74,10 @@ const AbmSeries = () => {
             ...prev,
             [seriesId]: !prev[seriesId],
         }));
-        console.log(seriesId)
+        console.log("id serie pasado a temporada", seriesId)
     };
 
-    
+
 
     //Manejo estado BUSCADOR
     const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -86,13 +108,17 @@ const AbmSeries = () => {
         setSortConfig({ key, direction });
     };
 
-    
+
     return (
         <div className="table-container">
-            {isModalAddSeason ? <ModalAddSeason onClose={handleCloseModalAddSeason} id={selectedSerieId}/>: ""}
+            {isModalAddSeason && <ModalAddSeason onClose={handleCloseModalAddSeason} id={selectedSerieId} />}
+            {isModalEditOpen && (<ModalAddSeries
+                serieToEdit={selectedSerie}
+                onClose={() => setModalEditOpen(false)}
+                />)}
             <button className="add-button" onClick={handleOpenModalAdd}>Agregar Series</button>
             {isModalAddOpen ?
-                <ModalAddSeries onClose={handleCloseModalAdd}  /> :
+                <ModalAddSeries onClose={handleCloseModalAdd} /> :
                 <>
                     <div className="table-header">
                         <h2>Series</h2>
@@ -124,18 +150,18 @@ const AbmSeries = () => {
                                             <button onClick={() => toggleSeries(series.id)}>
                                                 {expandedSeries[series.id] ? '▲' : '▼'}
                                             </button>
-                                            <button className="edit-btn" >✏️</button>
-                                            <button className="delete-btn">🗑️</button>
+                                            <button className="edit-btn" onClick={() => handleEditSerie(series)} >✏️</button>
+                                            <button className="delete-btn" onClick={() => handleDeletSerie(series.id)}>🗑️</button>
                                             <button className='add-btn' onClick={() => handleOpenModalAddSeason(series.id)}>+</button>
                                         </td>
                                     </tr>
-                                    {expandedSeries[series.id] ? <AbmSeason serieId={series.id}/> : ""}
+                                    {expandedSeries[series.id] && <AbmSeason serieId={series.id} />}
                                 </React.Fragment>
                             ))}
                         </tbody>
                     </table>
                 </>
-                }
+            }
         </div>
 
     );

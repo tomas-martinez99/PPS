@@ -1,7 +1,8 @@
-import  { useReducer, useState } from 'react';
+import { useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { addSeries } from '../../../services/seriesServices';
+import { addSeries, updateSeries } from '../../../services/seriesServices';
 import "./ModalAdd.css";
+
 
 // Definimos las acciones para el reducer
 const ACTIONS = {
@@ -50,25 +51,44 @@ const reducer = (state, action) => {
         case ACTIONS.CLEAR_ERROR:
             return { ...state, error: null };
         case ACTIONS.RESET_FORM:
-            return initialState;
+            return { ...initialState, ...action.payload };
+
         default:
             return state;
     }
 };
 
-const ModalAddSeries = ({ onClose }) => {
+const ModalAddSeries = ({ onClose, serieToEdit }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    
-   
+    // const refreshPage = () => {
+    //     window.location.reload();
+    // };
+
+    useEffect(() => {
+        if (serieToEdit) {
+            const formValues = {
+                title: serieToEdit.title || '',
+                synopsis: serieToEdit.synopsis || '',
+                language: serieToEdit.language || '',
+                director: serieToEdit.director || '',
+                genre: serieToEdit.genre ? serieToEdit.genre.join(', ') : '',
+                serieCoverUrl: serieToEdit.serieCoverUrl || '',
+            };
+            console.log(state, "useeffect antes del dispach")
+            dispatch({ type: ACTIONS.RESET_FORM, payload: formValues });
+            console.log(state, "useEffect depues del dispach")
+        } else {
+            dispatch({ type: ACTIONS.RESET_FORM, payload: initialState });
+        }
+    }, [serieToEdit]);
 
 
     // Maneja el envío del formulario
     const handleSave = async () => {
         // Validación del formulario
-
+        console.log(state, "edit ya pegandole a la api")
         if (!state.title) return dispatch({ type: ACTIONS.SET_ERROR, payload: "Title is required." });
         if (!state.synopsis) return dispatch({ type: ACTIONS.SET_ERROR, payload: "Synopsis is required." });
-        if (state.synopsis.length > 100) return dispatch({ type: ACTIONS.SET_ERROR, payload: "Synopsis must be 100 characters or less." });
         const seriesData = {
             title: state.title,
             synopsis: state.synopsis,
@@ -79,20 +99,26 @@ const ModalAddSeries = ({ onClose }) => {
         };
 
         try {
-            await addSeries(seriesData);
-            console.log('Serie agregada correctamente');
+            if (!serieToEdit) {
+                await addSeries(seriesData); // Llamada para agregar
+                console.log('Serie agregada correctamente');
+            } else {
+                await updateSeries(serieToEdit.id, seriesData); // Llamada para actualizar
+                console.log('Serie actualizada correctamente');
+            }
             dispatch({ type: ACTIONS.RESET_FORM });
             onClose(); // Cierra el formulario al guardar correctamente
         } catch (error) {
             console.error('Error al guardar la serie:', error);
             dispatch({ type: ACTIONS.SET_ERROR, payload: "Failed to save series." });
         }
+        // refreshPage()
     };
 
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                <h2>Agregar Serie</h2>
+                <h2>{serieToEdit ? 'Editar Serie' : 'Agregar Serie'}</h2>
                 {state.error && <p className="error-message">{state.error}</p>}
                 <label>
                     Título
@@ -142,7 +168,7 @@ const ModalAddSeries = ({ onClose }) => {
                     />
                 </label>
                 <label>
-                    URL de la portada 
+                    URL de la portada
                     <input
                         type="text"
                         placeholder="URL de la portada"
@@ -150,7 +176,7 @@ const ModalAddSeries = ({ onClose }) => {
                         onChange={(e) => dispatch({ type: ACTIONS.SET_COVER_URL, payload: e.target.value })}
                     />
                 </label>
-                <button onClick={handleSave} className="save-button">Agregar Serie</button>
+                <button onClick={handleSave} className="save-button">{serieToEdit ? 'Guardar Cambios' : 'Agregar Serie'}</button>
                 <button onClick={onClose} className="cancel-button">Cancelar</button>
             </div>
         </div>
@@ -159,6 +185,7 @@ const ModalAddSeries = ({ onClose }) => {
 
 ModalAddSeries.propTypes = {
     onClose: PropTypes.func.isRequired,
+    serieToEdit: PropTypes.object
 };
 
 export default ModalAddSeries;
