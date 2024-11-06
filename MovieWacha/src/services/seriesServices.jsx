@@ -19,6 +19,23 @@ export const getSeries = async () => {
   }
 };
 
+export const getSerieById = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/get/${id}`, {
+      method: "GET",
+      mode: "cors",
+    });
+    if (!response.ok) {
+      throw new Error("No se encontro la serie");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
 export const addSeries = async (seriesData) => {
   try {
     const token = localStorage.getItem('token');
@@ -68,6 +85,7 @@ export const updateSeries = async (Id, seriesData) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(seriesData),
+
     });
     if (!response.ok) {
       const errorData = await response.json();
@@ -171,3 +189,27 @@ export const getEpisode = async (id) => {
     throw error;
   }
 };
+
+export const addEpisode = async (episodeData) => {
+  try {
+    const token = localStorage.getItem('token');
+    console.log(episodeData, "episodio add")
+    const response = await fetch(`${API_URL}/add-season/`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(episodeData),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error del servidor:", errorData);
+      throw new Error("Error al agregar la temporada");
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getMoviesShowCaseById } from '../../services/homeServices';
-import { useRef } from 'react';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getMovieById } from "../../services/homeServices";
+import { useRef } from "react";
 
 const WatchMovie = () => {
   const { movieId } = useParams();
@@ -13,38 +13,41 @@ const WatchMovie = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        
+
         if (!token) {
-          throw new Error('No token found');
+          throw new Error("No token found");
         }
 
-        const result = await getMoviesShowCaseById(movieId);
+        const result = await getMovieById(movieId);
         setMovieById(result);
-        
+
         const fileName = result.movieVideo.fileName;
 
-        const response = await fetch(`https://localhost:7289/api/media/protected/${fileName}`, {
-            method: 'GET',
+        const response = await fetch(
+          `https://localhost:7289/api/media/protected/${fileName}`,
+          {
+            method: "GET",
             headers: {
-              'Authorization': `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
             },
-        })
+          }
+        );
 
         if (!response.ok) {
-            throw new Error('Failed to fetch the video');
-          }
-  
-          const videoBlob = await response.blob();
-          const videoUrl = URL.createObjectURL(videoBlob);
-  
-          if (videoRef.current) {
-            videoRef.current.src = videoUrl;
-          }
-        } catch (error) {
-          setError(error);
-          console.error('Error loading video:', error);
+          throw new Error("Failed to fetch the video");
         }
-        };
+
+        const videoBlob = await response.blob();
+        const videoUrl = URL.createObjectURL(videoBlob);
+
+        if (videoRef.current) {
+          videoRef.current.src = videoUrl;
+        }
+      } catch (error) {
+        setError(error);
+        console.error("Error loading video:", error);
+      }
+    };
 
     fetchData();
   }, [movieId]);
@@ -60,11 +63,7 @@ const WatchMovie = () => {
   return (
     <div>
       <h1>Ver Película: {movieById.title}</h1>
-      <video 
-        ref={videoRef}
-        controls 
-        width="100%"
-      >
+      <video ref={videoRef} controls width="100%">
         Tu navegador no soporta la etiqueta de video.
       </video>
     </div>

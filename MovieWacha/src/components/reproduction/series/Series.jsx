@@ -1,5 +1,12 @@
+import Home from "../home/Home";
+import "./series.css";
+
 const Series = () => {
-  return <div></div>;
+  return (
+    <div className="series-url-container">
+      <Home></Home>
+    </div>
+  );
 };
 
 export default Series;

@@ -14,28 +14,51 @@ import SelectPlan from "./components/suscripcion/selectPlan/SelectPlan";
 import ConfirmPlan from "./components/suscripcion/confirmPlan/ConfirmPlan";
 import PaymentSuccess from "./components/suscripcion/payment/PaymentSuccess";
 import WatchMovie from "./components/WatchMovie/WatchMovie";
+import PreReproMovie from "./components/reproduction/pre-repro/PreReproMovie";
+import PreReproSerie from "./components/reproduction/pre-repro/preReroSerie";
+import SearchResults from "./components/search-results/SearchResults";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element:<MainLayout><Home /></MainLayout>
+      element: (
+        <MainLayout>
+          <Home />
+        </MainLayout>
+      ),
     },
     {
-      path:"/payment/success",
-      element:<MainLayout><PaymentSuccess/></MainLayout>
+      path: "/payment/success",
+      element: (
+        <MainLayout>
+          <PaymentSuccess />
+        </MainLayout>
+      ),
     },
     {
       path: "/login",
-      element:<MainLayout><LoginUser /></MainLayout>
+      element: (
+        <MainLayout>
+          <LoginUser />
+        </MainLayout>
+      ),
     },
     {
       path: "/register",
-      element:<MainLayout><Register /></MainLayout>
+      element: (
+        <MainLayout>
+          <Register />
+        </MainLayout>
+      ),
     },
     {
       path: "/registerSuccess",
-      element: <MainLayout><RegisterSuccess /></MainLayout>
+      element: (
+        <MainLayout>
+          <RegisterSuccess />
+        </MainLayout>
+      ),
     },
     {
       path: "/profile",
@@ -43,7 +66,11 @@ function App() {
     },
     {
       path: "/movies",
-      element: <MainLayout>{<Movies />}</MainLayout>,
+      element: (
+        <MainLayout>
+          <Movies />
+        </MainLayout>
+      ),
     },
     {
       path: "/series",
@@ -59,19 +86,59 @@ function App() {
     },
     {
       path: "/abmSeries",
-      element: <MainLayout><AbmSeries/></MainLayout>,
+      element: (
+        <MainLayout>
+          <AbmSeries />
+        </MainLayout>
+      ),
     },
     {
       path: "/selectPlan",
-      element: <MainLayout><SelectPlan/></MainLayout>,
+      element: (
+        <MainLayout>
+          <SelectPlan />
+        </MainLayout>
+      ),
     },
     {
       path: "/confirmPlan",
-      element: <MainLayout><ConfirmPlan/></MainLayout>,
+      element: (
+        <MainLayout>
+          <ConfirmPlan />
+        </MainLayout>
+      ),
     },
     {
       path: "/watch/:movieId",
-      element: <MainLayout><WatchMovie /></MainLayout>
+      element: (
+        <MainLayout>
+          <WatchMovie />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/pre-repro-movie/:movieId",
+      element: (
+        <MainLayout>
+          <PreReproMovie />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/pre-repro-serie/:serieId",
+      element: (
+        <MainLayout>
+          <PreReproSerie />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/search-results/:searchString",
+      element: (
+        <MainLayout>
+          <SearchResults />
+        </MainLayout>
+      ),
     },
   ]);
 
