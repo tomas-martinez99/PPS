@@ -20,6 +20,7 @@ import PreReproSerie from "./components/reproduction/pre-repro/preReroSerie";
 import SearchResults from "./components/search-results/SearchResults";
 import ProtectedAdmin from "./protected/ProtectedAdmin";
 import UserNotPermis from "./components/pages/UserNotPermis";
+import AbmGenres from "./components/admin/abmGenres/AbmGenres";
 
 function App() {
   const router = createBrowserRouter([
@@ -98,6 +99,14 @@ function App() {
       element: (
         <MainLayout>
           <AbmMovies />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/abmGenres",
+      element: (
+        <MainLayout>
+          <AbmGenres />
         </MainLayout>
       ),
     },
