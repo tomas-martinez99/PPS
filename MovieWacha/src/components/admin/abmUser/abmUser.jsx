@@ -49,8 +49,7 @@ const abmUser = props => {
 
     );
 };
-  )
-}
+  
 
 abmUser.propTypes = {}
 
