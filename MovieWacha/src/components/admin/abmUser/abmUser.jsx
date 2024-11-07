@@ -3,12 +3,18 @@ import PropTypes from 'prop-types'
 import { deleteUser, getAllUser } from '../../../services/userServis';
 import "../abmSeries/AbmSeries.css"
 import "./AbmUser.css"
+import { useNavigate } from 'react-router-dom';
+import ModalUpdateUser from '../modalAdd-Edit/modal-user/ModalUpdateUser';
 
 const AbmUser = () => {
     const [searchTerm, setSearchTerm] = useState('');//Estado buscador
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });// Estado orden
     const [users, setUsers] = useState([])
-    const [isModalAddOpen, setModalAddOpen] = useState(false); // Estado ModalAdd
+    const [selectedUserName, setSelectedUserName] =useState(null);
+    const [selectedUserEmail, setSelectedUserEmail] =useState(null);
+    const [selectedUserRole, setSelectedUserRole] =useState(null)
+    const [isModalUpdateOpen, setModalUpdateOpen] = useState(false); // Estado ModalAdd
+    const navigate = useNavigate();
     const refreshPage = () => {
         window.location.reload();
     };
@@ -28,6 +34,26 @@ const AbmUser = () => {
 
         fetchData();
     }, []);
+
+    const handleOpenModalUpdateUser = (user) => {
+        setSelectedUserName(user.name);
+        setSelectedUserEmail(user.email);
+        setSelectedUserRole(user.role)
+        setModalUpdateOpen(true);
+    }
+    const handleCloseModalUpdateUser = () => {
+        setModalUpdateOpen(false);
+    }
+
+    const handleUpdateMovie = (name, email, pasword, role) => {
+        setUsers((prevUser) =>
+            prevUser.map((user) =>
+                user.name === name ? { ...user, email, pasword, role} : user
+            )
+        );
+    };
+
+
 
     //Manejo estado BUSCADOR
     const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -59,13 +85,10 @@ const AbmUser = () => {
         setSortConfig({ key, direction });
     }
 
-    const handleOpenModalAdd = () => {
-        setModalAddOpen(true);
+    const handleAddUser = () => {
+        navigate("/register")
     }
-    const handleCloseModaladd = () => {
-        setModalAddOpen(false);
-
-    }
+  
     //Delete 
     const handleDeletUser = (name) => {
         deleteUser(name)
@@ -74,7 +97,8 @@ const AbmUser = () => {
 
     return (
         <div className="table-container">
-            <button className="add-button" onClick={handleOpenModalAdd}>Agregar Usuario</button>
+            {isModalUpdateOpen ? <ModalUpdateUser name={selectedUserName} email={selectedUserEmail} role={selectedUserRole} onClose={handleCloseModalUpdateUser} onUpdate={handleUpdateMovie}/> : ""}
+            <button className="add-button" onClick={handleAddUser}>Agregar Usuario</button>
                 <>
                     <div className="table-header">
                         <h2>Usuarios</h2>
@@ -97,7 +121,7 @@ const AbmUser = () => {
                         </thead>
                         <tbody>
                             {sortedUsers.map((users) => (
-                                <React.Fragment key={users.id}>
+                                <React.Fragment key={users.name}>
                                     <tr className="row-series">
                                         <td>{users.name}</td>
                                         <td>{users.email}</td>
@@ -105,7 +129,7 @@ const AbmUser = () => {
                                         <td className={users.subscriptionStatus === "Active" ? "row-active" : "row-expire "}>
                                             {users.subscriptionStatus}</td>
                                         <td className="action-buttons">
-                                            <button className="edit-btn"  ><i className="fa-solid fa-pen"></i></button>
+                                            <button className="edit-btn" onClick={() => handleOpenModalUpdateUser(users)} ><i className="fa-solid fa-pen"></i></button>
                                             <button className="delete-btn"onClick={()=>(handleDeletUser(users.name))} ><i className="fa-solid fa-trash"></i></button>
                                         </td>
                                     </tr>

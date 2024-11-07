@@ -46,7 +46,8 @@ export const registerUser = async (userData) => {
     });
 
     if (!response.ok) {
-      throw new Error("Error en la solicitud");
+      const errorText = await response.text();
+      throw new Error(`Error en la solicitud: ${errorText}`);
     }
 
     const data = await response.json();

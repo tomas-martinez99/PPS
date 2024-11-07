@@ -10,6 +10,7 @@ import Home from "./components/reproduction/home/Home";
 import Movies from "./components/reproduction/movies/Movies";
 import Series from "./components/reproduction/series/Series";
 import AbmSeries from "./components/admin/abmSeries/AbmSeries";
+import AbmMovies from "./components/admin/abmMovies/AbmMovies";
 import SelectPlan from "./components/suscripcion/selectPlan/SelectPlan";
 import ConfirmPlan from "./components/suscripcion/confirmPlan/ConfirmPlan";
 import PaymentSuccess from "./components/suscripcion/payment/PaymentSuccess";
@@ -94,12 +95,20 @@ function App() {
       ),
     },
     {
-      path: "/abmUsers",
+      path: "/abmUser",
       element: (
         <MainLayout>
           <ProtectedAdmin>
           <AbmUser />
           </ProtectedAdmin>
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/abmMovies",
+      element: (
+        <MainLayout>
+          <AbmMovies />
         </MainLayout>
       ),
     },

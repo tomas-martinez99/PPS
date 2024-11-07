@@ -59,34 +59,24 @@ const Register = () => {
     e.preventDefault();
 
     dispatch({ type: "VALIDATE_FIELDS" });
-    const newErrors = {
-      userName: !newRegisterUserForm.userName,
-      email: !newRegisterUserForm.Email,
-      password: !newRegisterUserForm.Password,
-      confirmPassword: !newRegisterUserForm.confirmPassword,
-      passwordMatch: newRegisterUserForm.Password !== newRegisterUserForm.confirmPassword
-    };
+    const { errors } = newRegisterUserForm;
+    const hasErrors = Object.values(errors).some(error => error);
 
-    const hasErrors = Object.values(newErrors).some(error => error);
-    if (hasErrors){
-      if (newRegisterUserForm.Password !== newRegisterUserForm.confirmPassword) {
-        setShowPasswordMismatchAlert(true);
-        return;
-      }else{
-      setShowRegisterErrorAlert(true)
-      return
-      }
+    if (errors.passwordMatch) {
+      setShowPasswordMismatchAlert(true);
+      return;
     }
 
-    if (!hasErrors) {
-      const newRegisterUserFormData = {
-        userName: newRegisterUserForm.userName,
-        email: newRegisterUserForm.email,
-        password: newRegisterUserForm.password,
-        confirmPassword: newRegisterUserForm.confirmPassword,
-        rol: 2,
-        filmsFav: [],
-      }
+    if (hasErrors) {
+      setShowRegisterErrorAlert(true);
+      return;
+    }
+
+    const newRegisterUserFormData = {
+      userName: newRegisterUserForm.userName,
+      password: newRegisterUserForm.password, 
+      email: newRegisterUserForm.email,
+    };
 
       try{
         setIsSubmitting(true)
@@ -101,22 +91,19 @@ const Register = () => {
         console.error("Error al registrar", error);
       // Verifica si es un error relacionado con el nombre de usuario o el email
       if (error.message.includes('usuario ya está en uso')) {
-        setShowRegisterErrorAlert(true);
         // Mostrar mensaje específico para nombre de usuario
         setShowRegisterErrorAlertMessage('El nombre de usuario ya está en uso');
       } else if (error.message.includes('email ya está en uso')) {
-        setShowRegisterErrorAlert(true);
         // Mostrar mensaje específico para email
         setShowRegisterErrorAlertMessage('El email ya está en uso');
       } else {
-        setShowRegisterErrorAlert(true);
         setShowRegisterErrorAlertMessage('Error al registrar. Inténtelo de nuevo más tarde.');
       }
         setShowRegisterErrorAlert(true)
       } finally{
         setIsSubmitting(false)
       }
-  }}
+  }
   return (
     <div className='d-flex justify-content-center align-items-center vh-100'>
       <Card className="p-4 px-5 shadow" style={{ width: "500px", height: "" }}>
@@ -132,23 +119,13 @@ const Register = () => {
                   className={newRegisterUserForm.errors.userName ? 'is-invalid' : ''}
                 />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicName">
-            <Form.Label className='input-label d-flex align-items-center'>Nombre</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder=""
-                  value={newRegisterUserForm.name}
-                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "Name", value: e.target.value })}
-                  className={newRegisterUserForm.errors.email ? 'is-invalid' : ''}
-                />
-            </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label className='input-label d-flex align-items-center'>Email</Form.Label>
                 <Form.Control
                   type='email'
                   placeholder=""
-                  value={newRegisterUserForm.Email}
-                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "Email", value: e.target.value })}
+                  value={newRegisterUserForm.email}
+                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "email", value: e.target.value })}
                   className={newRegisterUserForm.errors.password || newRegisterUserForm.errors.passwordMatch ? 'is-invalid' : ''}
                 />
             </Form.Group>
@@ -157,8 +134,8 @@ const Register = () => {
                 <Form.Control
                   type="password"
                   placeholder=""
-                  value={newRegisterUserForm.Password}
-                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "Password", value: e.target.value })}
+                  value={newRegisterUserForm.password}
+                  onChange={(e) => dispatch({ type: "FIELD_CHANGE", field: "password", value: e.target.value })}
                   className={newRegisterUserForm.errors.confirmPassword || newRegisterUserForm.errors.passwordMatch ? 'is-invalid' : ''}
                 />
             </Form.Group>
@@ -179,7 +156,7 @@ const Register = () => {
             )}
             {showRegisterErrorAlert && (
               <Alert variant="danger" onClose={() => setShowRegisterErrorAlert(false)} dismissible>
-                {setShowRegisterErrorAlertMessage}
+                {showRegisterErrorAlertMessage}
               </Alert>
             )}
             <Button className='custom-button-register' type="submit" disabled={isSubmitting}>

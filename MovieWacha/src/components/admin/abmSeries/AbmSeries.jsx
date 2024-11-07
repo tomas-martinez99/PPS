@@ -44,9 +44,9 @@ const AbmSeries = () => {
     }
 
     //Edit serie
-    const handleEditSerie = (serie) => {
-        console.log(serie,"serie a editar")
-        setSelectedSerie(serie); // Guardar la serie seleccionada en el estado
+    const handleEditSerie = (id) => {
+        console.log(id,"serie a editar")
+        setSelectedSerie(id); // Guardar la serie seleccionada en el estado
         setModalEditOpen(true);  // Abrir el modal de edición
     };
 
@@ -148,7 +148,7 @@ const AbmSeries = () => {
                                             <button onClick={() => toggleSeries(series.id)}>
                                                 {expandedSeries[series.id] ? '▲' : '▼'}
                                             </button>
-                                            <button className="edit-btn" onClick={() => handleEditSerie(series)} ><i className="fa-solid fa-pen"></i></button>
+                                            <button className="edit-btn" onClick={() => handleEditSerie(series.id)} ><i className="fa-solid fa-pen"></i></button>
                                             <button className="delete-btn" onClick={() => handleDeletSerie(series.id)}><i className="fa-solid fa-trash"></i></button>
                                             <button className='add-btn' onClick={() => handleOpenModalAddSeason(series.id)}><i className="fa-solid fa-plus"></i></button>
                                         </td>
