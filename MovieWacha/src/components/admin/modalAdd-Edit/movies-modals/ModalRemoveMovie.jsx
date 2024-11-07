@@ -16,9 +16,9 @@ const ModalRemoveMovie = ({ id, onClose, onDelete }) => {
         <Alert variant="warning">
           Estas seguro de que deseas eliminar la pelicula con id: {id}
         </Alert>
-        {isDeletingMovie && <p>Cargando...</p>}
-        {deletedMovieError && <p>{deletedMovieError}</p>}
-        {deletedMovie && <p>Pelicula removida exitosamente!</p>}
+        {isDeletingMovie && <Alert variant="info">Cargando...</Alert>}
+        {deletedMovieError && <Alert variant="danger">{deletedMovieError}</Alert>}
+        {deletedMovie && <Alert variant="success">Género removido exitosamente!</Alert>}
         <button onClick={removeMovie} className="save-button">Eliminar pelicula</button>
         <button onClick={onClose} className="cancel-button">
           Cancelar
