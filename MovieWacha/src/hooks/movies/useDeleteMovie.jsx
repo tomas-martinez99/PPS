@@ -19,6 +19,10 @@ const useDeleteMovie = () => {
         method: "DELETE",
       });
 
+      if(response.status === 404){
+        setData(null);
+        throw new Error("No se ha encontrado la pelicula a eliminar")
+      }
       if(response.status !== 204) {
         setData(null);
         throw new Error("Ha ocurrido un problema al remover la pelicula");

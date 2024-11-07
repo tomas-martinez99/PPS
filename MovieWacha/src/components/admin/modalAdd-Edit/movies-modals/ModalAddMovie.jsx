@@ -4,13 +4,27 @@ import "../ModalAdd.css";
 import { addSeason } from "../../../../services/seriesServices";
 import useCreateMovie from "../../../../hooks/movies/useCreateMovie";
 import Alert from "react-bootstrap/Alert";
-const ModalAddMovie = ({ onClose }) => {
-  const [createdMovie, isCreatingMovie, isCreatingMovieError, createMovie] =
-    useCreateMovie();
+import { useEffect } from "react";
+import { useRef } from "react";
+const ModalAddMovie = ({ onClose, onCreate }) => {
+  const [createdMovie, isCreatingMovie, isCreatingMovieError, createMovie] = useCreateMovie();
 
+  const titleInputRef = useRef();
+  const genresInputRef = useRef();
+
+  //Enviar la pelicula creada al componente padre
+  useEffect(() => {
+    if (createdMovie) {
+      const titleInput = titleInputRef.current.value;
+      const genresInput = genresInputRef.current.value.split(",");
+
+      onCreate(createdMovie, titleInput, genresInput);
+    }
+  }, [createdMovie]);
+
+  //Manejar el submit
   const handleSubmit = async (event) => {
     event.preventDefault();
-    //Form data es porque el backend espera un multipart-form
     const formData = new FormData();
     const titleInput = event.target.elements.title;
     const durationInput = event.target.elements.duration;
@@ -22,7 +36,7 @@ const ModalAddMovie = ({ onClose }) => {
     const movieCoverUrlInput = event.target.elements.movieCoverUrl;
     const movieVideoInput = event.target.elements.movieVideo;
     const genresInput = event.target.elements.genres;
-    //Agregar al formulario
+
     formData.append("Title", titleInput.value);
     formData.append("Duration", durationInput.value);
     formData.append("Synopsis", synopsisInput.value);
@@ -49,6 +63,7 @@ const ModalAddMovie = ({ onClose }) => {
             <input
               type="text"
               name="title"
+              ref={titleInputRef}
               placeholder="Ingrese el titulo"
               required
             />
@@ -81,6 +96,7 @@ const ModalAddMovie = ({ onClose }) => {
             <input
               type="text"
               name="genres"
+              ref={genresInputRef}
               placeholder="Comedia,Aventura,etc"
               required
             />

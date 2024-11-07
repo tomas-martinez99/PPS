@@ -5,36 +5,30 @@ import ModalAddMovie from '../modalAdd-Edit/movies-modals/ModalAddMovie';
 import ModalAddSeason from '../modalAdd-Edit/ModalAddSeason';
 import useGetMovies from '../../../hooks/movies/useGetMovies';
 import ModalRemoveMovie from '../modalAdd-Edit/movies-modals/ModalRemoveMovie';
+import ModalUpdateMovie from '../modalAdd-Edit/movies-modals/ModalUpdateMovie';
 
 const AbmMovies = () => {
-    const [movies, isMoviesLoading, moviesError] = useGetMovies(); // Get Movies
+    const [movies, isMoviesLoading, moviesError, setMovies] = useGetMovies(); // Get Movies
 
     const [searchTerm, setSearchTerm] = useState('');//Estado buscador
     const [expandedSeries, setExpandedSeries] = useState({})//Estados Mostrar temporadas
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });// Estado orden
     const [isModalAddOpen, setModalAddOpen] = useState(false); // Estado ModalAdd
-    const [isModalAddSeason, setModalAddSeason] = useState(false)
     const [selectedSerieId, setSelectedSerieId] = useState(null);
 
     const [isModalRemoveOpen, setModalRemoveOpen] = useState(false);
+    const [isModalUpdateOpen, setModalUpdateOpen] = useState(false);
     
     useEffect(() => {
     }, []);
 
-    //Funciones Abrir/Cerrar Modal
+    //CreateMovie Modal
     const handleOpenModalAdd = () => { 
         setModalAddOpen(true);
     }
     const handleCloseModalAdd = () => { 
         setModalAddOpen(false);
     }
-    const handleCloseModalAddSeason = () => { 
-        setModalAddSeason(false);
-    }
-    const handleOpenModalAddSeason = (id) => {
-        setSelectedSerieId(id);
-        setModalAddSeason(true);
-    };
 
 
     //RemoveMovie Modal
@@ -45,20 +39,44 @@ const AbmMovies = () => {
 
     const handleCloseModalRemoveMovie = () => {
         setModalRemoveOpen(false);
-        console.log("Cerrar")
-
     }
 
-    //Mostrar las temporadas
-    const toggleMovies = (seriesId) => {
-        setExpandedSeries((prev) => ({
-            ...prev,
-            [seriesId]: !prev[seriesId],
-        }));
-        console.log(seriesId)
+    //UpdateMovie Modal
+    const handleOpenModalUpdateMovie = (id) => {
+        setSelectedSerieId(id);
+        setModalUpdateOpen(true);
+    }
+    const handleCloseModalUpdateMovie = () => {
+        setModalUpdateOpen(false);
+    }
+
+
+    //Actions handlers
+    const handleDeleteMovie = (idToDelete) => {
+        setMovies((prevMovies) => prevMovies.filter((movie) => movie.id !== idToDelete));
     };
 
+    const handleCreateMovie = (id, title, genres) => {
+        console.log(id);
+        const newMovie = {
+            id: id,
+            title: title,
+            genres: genres
+        };
     
+        setMovies((prevMovies) => [...prevMovies, newMovie]);
+    };
+
+    const handleUpdateMovie = (id, title, genres) => {
+        setMovies((prevMovies) =>
+            prevMovies.map((movie) =>
+                movie.id === id ? { ...movie, title, genres } : movie
+            )
+        );
+    };
+
+
+
 
     //Manejo estado BUSCADOR
     const handleSearchChange = (e) => setSearchTerm(e.target.value);
@@ -92,12 +110,10 @@ const AbmMovies = () => {
     
     return (
         <div className="table-container">
-            {isModalAddSeason ? <ModalAddSeason onClose={handleCloseModalAddSeason} id={selectedSerieId}/>: ""}
-            {isModalRemoveOpen ? <ModalRemoveMovie onClose={handleCloseModalRemoveMovie} id={selectedSerieId}/> : ""}
+            {isModalRemoveOpen ? <ModalRemoveMovie id={selectedSerieId} onClose={handleCloseModalRemoveMovie}  onDelete={handleDeleteMovie}/> : ""}
+            {isModalUpdateOpen ? <ModalUpdateMovie id={selectedSerieId} onClose={handleCloseModalUpdateMovie} onUpdate={handleUpdateMovie}/> : ""}
+            {isModalAddOpen ? <ModalAddMovie onClose={handleCloseModalAdd} onCreate={handleCreateMovie}  /> : ''}
             <button className="add-button" onClick={handleOpenModalAdd}>Agregar Peliculas</button>
-            {isModalAddOpen ?
-                <ModalAddMovie onClose={handleCloseModalAdd}  /> :
-                <>
                     <div className="table-header">
                         <h2>Movies</h2>
                         <input
@@ -122,22 +138,17 @@ const AbmMovies = () => {
                                     <tr className="row-series">
                                         <td>{movies.id}</td>
                                         <td>{movies.title}</td>
-                                        <td>{movies.genre}</td>
+                                        <td>{movies.genres.join(", ")}</td>
                                         <td className="action-buttons">
-                                            <button onClick={() => toggleMovies(movies.id)}>
-                                                {expandedSeries[movies.id] ? '▲' : '▼'}
-                                            </button>
-                                            <button className="edit-btn" >✏️</button>
+                                            <button className="edit-btn" onClick={() => handleOpenModalUpdateMovie(movies.id)}>✏️</button>
                                             <button className="delete-btn" onClick={() => handleOpenModalRemoveMovie(movies.id)}>🗑️</button>
-                                            <button className='add-btn' onClick={() => handleOpenModalAddSeason(movies.id)}>+</button>
                                         </td>
                                     </tr>
                                 </React.Fragment>
                             ))}
                         </tbody>
                     </table>
-                </>
-                }
+                
         </div>
 
     );
