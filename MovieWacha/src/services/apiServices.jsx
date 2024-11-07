@@ -56,3 +56,4 @@ export const registerUser = async (userData) => {
     throw error;
   }
 };
+

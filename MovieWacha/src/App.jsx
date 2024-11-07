@@ -19,6 +19,7 @@ import PreReproSerie from "./components/reproduction/pre-repro/preReroSerie";
 import SearchResults from "./components/search-results/SearchResults";
 import ProtectedAdmin from "./protected/ProtectedAdmin";
 import UserNotPermis from "./components/pages/UserNotPermis";
+import AbmUser from "./components/admin/abmUser/abmUser";
 
 function App() {
   const router = createBrowserRouter([
@@ -88,6 +89,16 @@ function App() {
         <MainLayout>
           <ProtectedAdmin>
           <AbmSeries />
+          </ProtectedAdmin>
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/abmUsers",
+      element: (
+        <MainLayout>
+          <ProtectedAdmin>
+          <AbmUser />
           </ProtectedAdmin>
         </MainLayout>
       ),

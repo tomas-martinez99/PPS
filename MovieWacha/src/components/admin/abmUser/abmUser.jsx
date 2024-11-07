@@ -1,12 +1,80 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
+import { deleteUser, getAllUser } from '../../../services/userServis';
+import "../abmSeries/AbmSeries.css"
+import "./AbmUser.css"
 
-const abmUser = props => {
+const AbmUser = () => {
+    const [searchTerm, setSearchTerm] = useState('');//Estado buscador
+    const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });// Estado orden
+    const [users, setUsers] = useState([])
+    const [isModalAddOpen, setModalAddOpen] = useState(false); // Estado ModalAdd
+    const refreshPage = () => {
+        window.location.reload();
+    };
+
+    //LLamado a la api
+    useEffect(() => {
+        // Función para cargar los datos
+        const fetchData = async () => {
+            try {
+                const result = await getAllUser();
+                setUsers(result); // Guardar datos en el estado
+                console.log("Usuarios Cargadas en el abm", result)
+            } catch (err) {
+                console.log(err.message)
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    //Manejo estado BUSCADOR
+    const handleSearchChange = (e) => setSearchTerm(e.target.value);
+
+     // Filtrado de series BUSCADOR
+     const filteredUsers = users.filter((users) =>
+        users.email.toLowerCase().includes(searchTerm.toLowerCase())||
+     users.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // Orden Con botones id nombre o estado
+    const sortedUsers = [...filteredUsers].sort((a, b) => {
+        if (sortConfig.key) {
+            const aValue = a[sortConfig.key];
+            const bValue = b[sortConfig.key];
+
+            if (aValue < bValue) return sortConfig.direction === 'ascending' ? -1 : 1;
+            if (aValue > bValue) return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+    });
+
+    // Cambio de orden acendete o decendente
+    const requestSort = (key) => {
+        let direction = 'ascending';
+        if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+    }
+
+    const handleOpenModalAdd = () => {
+        setModalAddOpen(true);
+    }
+    const handleCloseModaladd = () => {
+        setModalAddOpen(false);
+
+    }
+    //Delete 
+    const handleDeletUser = (name) => {
+        deleteUser(name)
+        refreshPage()
+    }
+
     return (
         <div className="table-container">
             <button className="add-button" onClick={handleOpenModalAdd}>Agregar Usuario</button>
-            {isModalAddOpen ?
-                <ModalAddUser onClose={handleCloseModaladd} /> :
                 <>
                     <div className="table-header">
                         <h2>Usuarios</h2>
@@ -21,22 +89,24 @@ const abmUser = props => {
                     <table className="series-table">
                         <thead>
                             <tr>
-                                <th onClick={() => requestSort('id')}>ID</th>
-                                <th onClick={() => requestSort('title')}>Usuario</th>
-                                <th onClick={() => requestSort('genre')}>Estado de suscripcion</th>
-                                <th></th>
+                                <th onClick={() => requestSort('name')}>Usuario</th>
+                                <th onClick={() => requestSort('email')}>Email</th>
+                                <th onClick={() => requestSort('role')}>Rol</th>
+                                <th onClick={() => requestSort('subscriptionStatus')}>Estado de suscripcion</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {sortedSeries.map((series) => (
-                                <React.Fragment key={series.id}>
+                            {sortedUsers.map((users) => (
+                                <React.Fragment key={users.id}>
                                     <tr className="row-series">
-                                        <td>{series.id}</td>
-                                        <td>{series.title}</td>
-                                        <td>{series.genre}</td>
+                                        <td>{users.name}</td>
+                                        <td>{users.email}</td>
+                                        <td>{users.role}</td>
+                                        <td className={users.subscriptionStatus === "Active" ? "row-active" : "row-expire "}>
+                                            {users.subscriptionStatus}</td>
                                         <td className="action-buttons">
-                                            <button className="edit-btn" onClick={() => handleEditSerie(series)} ><i className="fa-solid fa-pen"></i></button>
-                                            <button className="delete-btn" onClick={() => handleDeletSerie(series.id)}><i className="fa-solid fa-trash"></i></button>
+                                            <button className="edit-btn"  ><i className="fa-solid fa-pen"></i></button>
+                                            <button className="delete-btn"onClick={()=>(handleDeletUser(users.name))} ><i className="fa-solid fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 </React.Fragment>
@@ -44,14 +114,13 @@ const abmUser = props => {
                         </tbody>
                     </table>
                 </>
-            }
         </div>
 
     );
 };
-  )
-}
+  
 
-abmUser.propTypes = {}
 
-export default abmUser
+AbmUser.propTypes = {}
+
+export default AbmUser

@@ -15,7 +15,6 @@ const AbmSeries = () => {
     const [series, setSeries] = useState([])//Estado para las series cargadas
     const [isModalAddSeason, setModalAddSeason] = useState(false)//Estado modal addSeason
     const [selectedSerieId, setSelectedSerieId] = useState(null);//Id de la serie pasado al componente de las temporadas
-    const [reload, setReload] = useState(true);//estado de recarga
     const [isModalEditOpen, setModalEditOpen] = useState(false);//Modal de edicion de series
     const [selectedSerie, setSelectedSerie] = useState(null);//Pasaje de datos al modadal de edicion
 
@@ -36,7 +35,7 @@ const AbmSeries = () => {
         };
 
         fetchData();
-    }, [reload]);
+    }, []);
 
     //Borrar serie
     const handleDeletSerie = (id) => {
@@ -54,7 +53,6 @@ const AbmSeries = () => {
     //Funciones Abrir/Cerrar Modal
     const handleOpenModalAdd = () => {
         setModalAddOpen(true);
-        setReload(!reload)
     }
     const handleCloseModalAdd = () => {
         setModalAddOpen(false);
