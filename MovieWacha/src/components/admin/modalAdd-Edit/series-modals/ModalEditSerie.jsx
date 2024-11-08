@@ -1,25 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
-import { getSerieById } from '../../../services/seriesServices';
+import { getSerieById, updateSeries } from '../../../../services/seriesServices';
 
 const ModalEditSerie = ({id, onClose}) => {
-    const [newTitle, setNewTitle] = useState("")
-    const [newSynopsis, setNewSynopsis] = useState("")
-    const [newUrl, setNewUrl] = useState("")
-    const [newDirector, setNewDirector] = useState("")
-    const [newLanguage, setNewLanguage] = useState("")
-    const [newGenre, setNewGenre] = useState([])
+    const titleRef = useRef(null)
+    const synopsisRef = useRef(null)
+    const urlRef = useRef(null)
+    const directorRef = useRef(null)
+    const genreRef = useRef(null)
+    const languageRef = useRef(null)
     useEffect(() => {
         // Función para cargar los datos
         const fetchData = async () => {
+            console.log(id)
             try {
+               
                 const result = await getSerieById(id);
-                setNewUrl(result.sereiCoverUrl); // Guardar datos en el estado
-                setNewSynopsis(result.synopsis)
-                setNewTitle(result.title)
-                setNewGenre(result.genre)
-                setNewDirector(result.director)
-                setNewLanguage(result.newLanguage)
+                console.log(result)
+                if(result){
+                    titleRef.current.value = result.title;
+                    synopsisRef.current.value = result.synopsis
+                    urlRef.current.value = result.serieCoverUrl;
+                    directorRef.current.value = result.director;
+                    genreRef.current.value = result.genre.join(", ");
+                    languageRef.current.value = result.language;
+                }
                 console.log("series Cargadas en el abm", result)
             } catch (err) {
                 console.log(err.message)
@@ -28,6 +33,28 @@ const ModalEditSerie = ({id, onClose}) => {
 
         fetchData();
     }, []);
+
+    const handelSave = async() =>{
+        const newData = {
+            title: titleRef.current.value,
+            synopsis: synopsisRef.current.value,
+            serieCoverUrl: urlRef.current.value,
+            director: directorRef.current.value,
+            genreNames: genreRef.current.value.split(',').map(g => g.trim()),
+            language: languageRef.current.value
+        }
+        console.log(newData)
+        if (!newData){
+            return console.log("error al actualizar")
+        }
+        try{
+            await updateSeries(id,newData)
+            console.log("actualizado")
+            onClose()
+        } catch (error) {
+            console.error('Error al guardar la serie:', error);
+        }
+    }
 
   return (
     <div className="modal-overlay">
@@ -38,8 +65,7 @@ const ModalEditSerie = ({id, onClose}) => {
                     <input
                         type="text"
                         placeholder="Título"
-                        value={newTitle}
-                        onChange={(e) => e.target.value}
+                        ref={titleRef}
                         required
                     />
                 </label>
@@ -47,9 +73,7 @@ const ModalEditSerie = ({id, onClose}) => {
                     Sinopsis (máx. 100 caracteres)
                     <textarea
                         placeholder="Sinopsis"
-                        value={newSynopsis}
-                        maxLength={100}
-                        onChange={(e) => e.target.value}
+                        ref={synopsisRef}
                         required
                     />
                 </label>
@@ -58,8 +82,8 @@ const ModalEditSerie = ({id, onClose}) => {
                     <input
                         type="text"
                         placeholder="Lenguaje"
-                        onChange={(e) => e.target.value}
-                        value={newLanguage}
+                        ref={languageRef}
+                        required
                     />
                 </label>
                 <label>
@@ -67,8 +91,8 @@ const ModalEditSerie = ({id, onClose}) => {
                     <input
                         type="text"
                         placeholder="Director"
-                        onChange={(e) => e.target.value}
-                        value={newDirector}
+                        ref={directorRef}
+                        required
                     />
                 </label>
                 <label>
@@ -76,8 +100,8 @@ const ModalEditSerie = ({id, onClose}) => {
                     <input
                         type="text"
                         placeholder="Ej: Comedia, Drama"
-                        onChange={(e) => e.target.value}
-                        value={newGenre}
+                        ref={genreRef}
+                        required
                     />
                 </label>
                 <label>
@@ -85,11 +109,11 @@ const ModalEditSerie = ({id, onClose}) => {
                     <input
                         type="text"
                         placeholder="URL de la portada"
-                        onChange={(e) => e.target.value}
-                        value={newUrl}
+                        ref={urlRef}
+                        required
                     />
                 </label>
-                <button  className="save-button"> Agregar Serie</button>
+                <button  className="save-button" onClick={handelSave}> Guardar Cambios</button>
                 <button onClick={onClose} className="cancel-button">Cancelar</button>
             </div>
         </div>

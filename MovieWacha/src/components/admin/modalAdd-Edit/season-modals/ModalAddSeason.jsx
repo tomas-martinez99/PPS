@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import PropTypes from 'prop-types'
-import "./ModalAdd.css"
-import { addSeason } from '../../../services/seriesServices'
+import "../../modalAdd-Edit/ModalAdd.css"
+import { addSeason } from '../../../../services/seriesServices'
 
 const ModalAddSeason = ({id, onClose}) => {
     const [seasonNumeber, setSeasonNumber] = useState("")
@@ -36,7 +36,7 @@ const ModalAddSeason = ({id, onClose}) => {
                         required
                     />
                 </label>
-                <button onClick={handleSave} className="save-button">Agregar Serie</button>
+                <button onClick={handleSave} className="save-button">Agregar Temporada</button>
                 <button onClick={onClose} className="cancel-button">Cancelar</button>
             </div>
         </div>

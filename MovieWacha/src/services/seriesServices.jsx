@@ -88,12 +88,14 @@ export const updateSeries = async (Id, seriesData) => {
 
     });
     if (!response.ok) {
-      const errorData = await response.json();
+      const errorText = await response.text();
+      const errorData = errorText ? JSON.parse(errorText) : { message: "Respuesta vacía del servidor" };
       console.error("Error del servidor:", errorData);
-      throw new Error("Error al agregar la serie");
+      throw new Error("Error al actualizar la serie");
     }
 
-    const data = await response.json();
+    const text = await response.text(); // Lee el cuerpo de la respuesta como texto
+    const data = text ? JSON.parse(text) : {}; // Si el texto no está vacío, parsea a JSON
     console.log("Serie Actualizada", data);
     return data;
   } catch (error) {
@@ -138,7 +140,7 @@ export const addSeason = async (seasonData) => {
   try {
     const token = localStorage.getItem('token');
     console.log(seasonData, "serie add")
-    const response = await fetch(`${API_URL}/add-season/`, {
+    const response = await fetch(`${API_URL}/add-season`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -160,18 +162,42 @@ export const addSeason = async (seasonData) => {
 
 export const deleteSeason = async (id) => {
   const token = localStorage.getItem('token');
-  const response = await fetch(`${API_URL}/delete/${id}`,
+  const response = await fetch(`${API_URL}/delete-season-from-serie`,
     {
       method: "DELETE",
       headers: {
         "Authorization": `Bearer ${token}`
-      }
+      },body: JSON.stringify(id),
     });
   if (!response.ok) {
     throw new Error("Error al eliminar la serie");
   }
 };
 
+export const updateSeason = async (id, seasonData) =>{
+  try {
+    const token = localStorage.getItem('token');
+    console.log(seasonData, "serie add", id)
+    const response = await fetch(`${API_URL}/update-season/${id}`, {
+      method: "PUT",
+      mode: "cors",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(seasonData),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error del servidor:", errorData);
+      throw new Error("Error al agregar la temporada");
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+
+}
 //Episodios
 export const getEpisode = async (id) => {
   try {
