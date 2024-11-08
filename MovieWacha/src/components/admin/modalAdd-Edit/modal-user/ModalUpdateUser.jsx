@@ -8,10 +8,10 @@ const ModalUpdateUser = ({name,email,role, onClose, onUpdate}) => {
         name:name,
         email:email,
         role:role,
-      }try{
-        await 
-      }
-    }
+      //  }try{
+      //    await 
+      //  }
+    }}
   return (
     <></>
   )

@@ -1,4 +1,4 @@
-const API_URL = "https://localhost:7289/api/statistics";
+const API_URL = "https://localhost:7289/api/statitics";
 
 export const getStatisticsSevenDaysAgo = async () => {
   // 7 dias antes
@@ -18,7 +18,7 @@ export const getStatisticsSevenDaysAgo = async () => {
   }
 };
 
-export const getStatisticsPorcentage = async () => {
+export const getStatisticsPorcentaje = async () => {
   // porcentaje del total de registrados en los ultimos 30 dias
   try {
     const response = await fetch(`${API_URL}/statics-porcentage`, {

@@ -83,10 +83,6 @@ function App() {
       element: <MainLayout>{<Series />}</MainLayout>,
     },
     {
-      path: "/statistics",
-      element: <MainLayout>{/* <Statistics/> */}</MainLayout>,
-    },
-    {
       path: "/abmSeries",
       element: (
         <MainLayout>
@@ -179,7 +175,7 @@ function App() {
       ),
     },
     {
-      path: "/statitics",
+      path: "/statistics",
       element: (
         <MainLayout>
           <Statistics/>
