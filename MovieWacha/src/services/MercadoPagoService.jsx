@@ -20,3 +20,16 @@ export const successPay = async (paymentId) =>{
         throw error; // Lanza el error para manejarlo en el componente
     }
 }
+
+export const getPreferenceId = async () =>{
+    const respone = await fetch(`${API_URL}/get-actual-preference`,{
+        method:"GET",
+        mode:"cors",
+    })
+     const data =await respone.json()
+    if (respone.ok) {
+        console.log("preference id", data.id)
+        return data.id
+    }
+}
+

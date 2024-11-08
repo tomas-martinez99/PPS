@@ -38,7 +38,8 @@ const AbmUser = () => {
     const handleOpenModalUpdateUser = (user) => {
         setSelectedUserName(user.name);
         setSelectedUserEmail(user.email);
-        setSelectedUserRole(user.role)
+        setSelectedUserRole(user.role);
+
         setModalUpdateOpen(true);
     }
     const handleCloseModalUpdateUser = () => {
@@ -97,7 +98,7 @@ const AbmUser = () => {
 
     return (
         <div className="table-container">
-            {isModalUpdateOpen ? <ModalUpdateUser name={selectedUserName} email={selectedUserEmail} role={selectedUserRole} onClose={handleCloseModalUpdateUser} onUpdate={handleUpdateMovie}/> : ""}
+            {isModalUpdateOpen ? <ModalUpdateUser name={selectedUserName} email={selectedUserEmail} role={selectedUserRole}  onClose={handleCloseModalUpdateUser} onUpdate={handleUpdateMovie}/> : ""}
             <button className="add-button" onClick={handleAddUser}>Agregar Usuario</button>
                 <>
                     <div className="table-header">

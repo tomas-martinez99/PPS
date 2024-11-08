@@ -36,7 +36,7 @@ export const deleteUser = async (name) => {
   }
 };
 
-export const updateUser = async (name, userData) => {
+export const updateUser = async ( userData,name) => {
   try {
     const token = localStorage.getItem('token');
     const response = await fetch(`${API_URL}/update/${name}`,
