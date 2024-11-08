@@ -58,3 +58,19 @@ export const registerUser = async (userData) => {
   }
 };
 
+export const refreshSession = async () => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${API_URL}/refresh`,{
+    method:"GET",
+    mode:"cors",
+    headers: {
+      "Authorization": `Bearer ${token}` 
+    },
+  })
+  const data = await response.text()
+  if(response.ok){
+    console.log(data)
+  }
+}
+
+

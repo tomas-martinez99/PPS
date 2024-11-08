@@ -51,36 +51,18 @@ const reducer = (state, action) => {
         case ACTIONS.CLEAR_ERROR:
             return { ...state, error: null };
         case ACTIONS.RESET_FORM:
-            return { ...initialState, ...action.payload };
+            return { initialState };
 
         default:
             return state;
     }
 };
 
-const ModalAddSeries = ({ onClose, serieToEdit }) => {
+const ModalAddSeries = ({ onClose,  }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    // const refreshPage = () => {
-    //     window.location.reload();
-    // };
-
-    useEffect(() => {
-        if (serieToEdit) {
-            const formValues = {
-                title: serieToEdit.title || '',
-                synopsis: serieToEdit.synopsis || '',
-                language: serieToEdit.language || '',
-                director: serieToEdit.director || '',
-                genre: serieToEdit.genre ? serieToEdit.genre.join(', ') : '',
-                serieCoverUrl: serieToEdit.serieCoverUrl || '',
-            };
-            console.log(state, "useeffect antes del dispach")
-            dispatch({ type: ACTIONS.RESET_FORM, payload: formValues });
-            console.log(state, "useEffect depues del dispach")
-        } else {
-            dispatch({ type: ACTIONS.RESET_FORM, payload: initialState });
-        }
-    }, [serieToEdit]);
+     const refreshPage = () => {
+        window.location.reload();
+    };
 
 
     // Maneja el envío del formulario
@@ -99,26 +81,21 @@ const ModalAddSeries = ({ onClose, serieToEdit }) => {
         };
 
         try {
-            if (!serieToEdit) {
                 await addSeries(seriesData); // Llamada para agregar
                 console.log('Serie agregada correctamente');
-            } else {
-                await updateSeries(serieToEdit.id, seriesData); // Llamada para actualizar
-                console.log('Serie actualizada correctamente');
-            }
             dispatch({ type: ACTIONS.RESET_FORM });
             onClose(); // Cierra el formulario al guardar correctamente
         } catch (error) {
             console.error('Error al guardar la serie:', error);
             dispatch({ type: ACTIONS.SET_ERROR, payload: "Failed to save series." });
         }
-        // refreshPage()
+         refreshPage()
     };
 
     return (
         <div className="modal-overlay">
             <div className="modal-content">
-                <h2>{serieToEdit ? 'Editar Serie' : 'Agregar Serie'}</h2>
+                <h2>Agregar Serie</h2>
                 {state.error && <p className="error-message">{state.error}</p>}
                 <label>
                     Título
@@ -176,7 +153,7 @@ const ModalAddSeries = ({ onClose, serieToEdit }) => {
                         onChange={(e) => dispatch({ type: ACTIONS.SET_COVER_URL, payload: e.target.value })}
                     />
                 </label>
-                <button onClick={handleSave} className="save-button">{serieToEdit ? 'Guardar Cambios' : 'Agregar Serie'}</button>
+                <button onClick={handleSave} className="save-button"> Agregar Serie</button>
                 <button onClick={onClose} className="cancel-button">Cancelar</button>
             </div>
         </div>
