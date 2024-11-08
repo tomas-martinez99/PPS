@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import AbmEpisode from '../abmEpisode/AbmEpisode';
 import { deleteSeason, getSeason } from '../../../services/seriesServices';
 import ModalUpdateSeason from '../modalAdd-Edit/season-modals/ModalUpdateSeason';
-import ModalAddEpisode from '../modalAdd-Edit/episode-modals/ModalAddEpisode';
+//import ModalAddEpisode from '../modalAdd-Edit/episode-modals/ModalAddEpisode';
 
 const AbmSeason = ({ serieId }) => {
     const [expandedSeasons, setExpandedSeasons] = useState({})//Estados Mostrar episodios
@@ -45,7 +45,7 @@ const AbmSeason = ({ serieId }) => {
     return (
         <>
             {showModalEditSeason && <ModalUpdateSeason seasonId ={selectedSeasonId} onClose={handleCloseModal} />}
-            {showModalAddEpisode && <ModalAddEpisode seasonId= {selectedSeasonId} onClose={handleCloseModal} />}
+            {/* {showModalAddEpisode && <ModalAddEpisode seasonId= {selectedSeasonId} onClose={handleCloseModal} />} */}
             {season.length > 0 ? season.map((season) => (
                 <React.Fragment key={season.id}>
                     <tr className="row-season" >

@@ -27,7 +27,17 @@ const PreReproSerie = () => {
       }
     };
 
+    const fetchEpisodeFromSerie = async () => {
+      try{
+        const result = await getEpisodeFromSeason(serieEpisode)
+      } catch (error) {
+        setError(error);
+        console.error("There was a problem with the fetch operation:", error);
+      }
+    }
+
     fetchSerie();
+    fetchEpisodeFromSerie();
   }, [serieId]);
 
   // FALTA SERIES POR GENERO

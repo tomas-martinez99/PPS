@@ -216,6 +216,23 @@ export const getEpisode = async (id) => {
   }
 };
 
+export const getEpisodeFromSeason = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/get-episodes-from-season/${id}`, {
+      method: "GET",
+      mode: "cors",
+    });
+    if (!response.ok) {
+      throw new Error("No se encontraron los Episodios");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
 export const addEpisode = async (episodeData) => {
   try {
     const token = localStorage.getItem('token');
