@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import "./AbmSeries.css"
-import ModalAddSeries from '../modalAdd-Edit/ModalAddSeries';
+import ModalAddSeries from '../modalAdd-Edit/series-modals/ModalAddSeries';
 import { deleteSerie, getSeries } from '../../../services/seriesServices';
 import AbmSeason from '../abmSeason/AbmSeason';
-import ModalAddSeason from '../modalAdd-Edit/ModalAddSeason';
-import ModalEditSerie from '../modalAdd-Edit/ModalEditSerie';
+import ModalAddSeason from '../modalAdd-Edit/season-modals/ModalAddSeason';
+import ModalEditSerie from '../modalAdd-Edit/series-modals/ModalEditSerie';
 
 
 const AbmSeries = () => {
@@ -19,9 +18,9 @@ const AbmSeries = () => {
     const [isModalEditOpen, setModalEditOpen] = useState(false);//Modal de edicion de series
     
 
-    const refreshPage = () => {
-        window.location.reload();
-    };
+    // const refreshPage = () => {
+    //     window.location.reload();
+    // };
     //LLamado a la api
     useEffect(() => {
         // Función para cargar los datos
@@ -41,7 +40,7 @@ const AbmSeries = () => {
     //Borrar serie
     const handleDeletSerie = (id) => {
         deleteSerie(id)
-        refreshPage()
+        
     }
 
     //Edit serie
@@ -149,7 +148,7 @@ const AbmSeries = () => {
                                             <button onClick={() => toggleSeries(series.id)}>
                                                 {expandedSeries[series.id] ? '▲' : '▼'}
                                             </button>
-                                            <button className="edit-btn" onClick={() => handleEditSerie(series)} ><i className="fa-solid fa-pen"></i></button>
+                                            <button className="edit-btn" onClick={() => handleEditSerie(series.id)} ><i className="fa-solid fa-pen"></i></button>
                                             <button className="delete-btn" onClick={() => handleDeletSerie(series.id)}><i className="fa-solid fa-trash"></i></button>
                                             <button className='add-btn' onClick={() => handleOpenModalAddSeason(series.id)}><i className="fa-solid fa-plus"></i></button>
                                         </td>

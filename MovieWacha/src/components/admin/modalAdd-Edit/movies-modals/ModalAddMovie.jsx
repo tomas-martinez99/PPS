@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "../ModalAdd.css";
-import { addSeason } from "../../../../services/seriesServices";
 import useCreateMovie from "../../../../hooks/movies/useCreateMovie";
 import Alert from "react-bootstrap/Alert";
 import { useEffect } from "react";

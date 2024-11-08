@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import "./AbmGenres.css"
-import ModalAddMovie from '../modalAdd-Edit/movies-modals/ModalAddMovie';
-import ModalAddSeason from '../modalAdd-Edit/ModalAddSeason';
-import useGetMovies from '../../../hooks/movies/useGetMovies';
-import ModalRemoveMovie from '../modalAdd-Edit/movies-modals/ModalRemoveMovie';
-import ModalUpdateMovie from '../modalAdd-Edit/movies-modals/ModalUpdateMovie';
 import useGetGenres from '../../../hooks/genres/useGetGenres';
 import ModalAddGenre from '../modalAdd-Edit/genres-modals/ModalAddGenre';
 import ModalDeleteGenre from '../modalAdd-Edit/genres-modals/ModalDeleteGenre';
