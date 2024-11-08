@@ -20,11 +20,9 @@ import PreReproSerie from "./components/reproduction/pre-repro/preReroSerie";
 import SearchResults from "./components/search-results/SearchResults";
 import ProtectedAdmin from "./protected/ProtectedAdmin";
 import UserNotPermis from "./components/pages/UserNotPermis";
-<<<<<<< HEAD
 import AbmUser from "./components/admin/abmUser/abmUser";
-=======
+import Statistics from "./components/statistics/Statistics";
 import AbmGenres from "./components/admin/abmGenres/AbmGenres";
->>>>>>> b0de9585948efcf46d81dbf2fa73a8e66c08f149
 
 function App() {
   const router = createBrowserRouter([
@@ -177,6 +175,14 @@ function App() {
       element: (
         <MainLayout>
           <UserNotPermis/>
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/statitics",
+      element: (
+        <MainLayout>
+          <Statistics/>
         </MainLayout>
       ),
     },
