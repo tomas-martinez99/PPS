@@ -1,13 +1,23 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import "./ConfirmPlan.css"
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
+import { getPreferenceId } from '../../../services/MercadoPagoService';
 
 const ConfirmPlan = () => {
-
+    const [preferenceId, setPreferenceId] = useState(null)
     useEffect(() => {
         initMercadoPago('APP_USR-3c383fbd-93f1-4ec3-9ade-55292876b3a4');
-        
+        const fetchData = async () =>{
+            try{
+                const result = await getPreferenceId()
+                setPreferenceId(result)
+                console.log("paimen id en el comfirm", result)
+            }catch(error){
+                console.log(error.message)
+            }
+        }
+        fetchData()
       }, []);
     
     return (
@@ -24,9 +34,8 @@ const ConfirmPlan = () => {
                     <li>Pantallas ilimitadas</li>
                 </ul>
                     <div id="wallet_container">
-                    <Wallet initialization={{ preferenceId:"2029783441-ffba5d31-690e-44f1-9b13-12e46e8b36b2" }} >
-                        Ir a mercado pago
-                    </Wallet>
+                    <Wallet initialization={{ preferenceId:preferenceId }} />
+                      
                     </div>
                 <p className="other-payment-methods">Otros medios de pago</p>
             </div>

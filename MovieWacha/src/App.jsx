@@ -134,6 +134,7 @@ function App() {
         </MainLayout>
       ),
     },
+   
     {
       path: "/watch/:movieId",
       element: (

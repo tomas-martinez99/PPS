@@ -5,6 +5,7 @@ import ModalAddSeries from '../modalAdd-Edit/ModalAddSeries';
 import { deleteSerie, getSeries } from '../../../services/seriesServices';
 import AbmSeason from '../abmSeason/AbmSeason';
 import ModalAddSeason from '../modalAdd-Edit/ModalAddSeason';
+import ModalEditSerie from '../modalAdd-Edit/ModalEditSerie';
 
 
 const AbmSeries = () => {
@@ -16,7 +17,7 @@ const AbmSeries = () => {
     const [isModalAddSeason, setModalAddSeason] = useState(false)//Estado modal addSeason
     const [selectedSerieId, setSelectedSerieId] = useState(null);//Id de la serie pasado al componente de las temporadas
     const [isModalEditOpen, setModalEditOpen] = useState(false);//Modal de edicion de series
-    const [selectedSerie, setSelectedSerie] = useState(null);//Pasaje de datos al modadal de edicion
+    
 
     const refreshPage = () => {
         window.location.reload();
@@ -46,7 +47,7 @@ const AbmSeries = () => {
     //Edit serie
     const handleEditSerie = (id) => {
         console.log(id,"serie a editar")
-        setSelectedSerie(id); // Guardar la serie seleccionada en el estado
+        setSelectedSerieId(id); // Guardar la serie seleccionada en el estado
         setModalEditOpen(true);  // Abrir el modal de edición
     };
 
@@ -110,8 +111,8 @@ const AbmSeries = () => {
     return (
         <div className="table-container">
             {isModalAddSeason && <ModalAddSeason onClose={handleCloseModalAddSeason} id={selectedSerieId} />}
-            {isModalEditOpen && (<ModalAddSeries
-                serieToEdit={selectedSerie}
+            {isModalEditOpen && (<ModalEditSerie
+                id={selectedSerieId}
                 onClose={() => setModalEditOpen(false)}
                 />)}
             <button className="add-button" onClick={handleOpenModalAdd}>Agregar Series</button>
@@ -148,7 +149,7 @@ const AbmSeries = () => {
                                             <button onClick={() => toggleSeries(series.id)}>
                                                 {expandedSeries[series.id] ? '▲' : '▼'}
                                             </button>
-                                            <button className="edit-btn" onClick={() => handleEditSerie(series.id)} ><i className="fa-solid fa-pen"></i></button>
+                                            <button className="edit-btn" onClick={() => handleEditSerie(series)} ><i className="fa-solid fa-pen"></i></button>
                                             <button className="delete-btn" onClick={() => handleDeletSerie(series.id)}><i className="fa-solid fa-trash"></i></button>
                                             <button className='add-btn' onClick={() => handleOpenModalAddSeason(series.id)}><i className="fa-solid fa-plus"></i></button>
                                         </td>
