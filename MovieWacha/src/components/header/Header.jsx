@@ -12,6 +12,7 @@ import { AuthenticationContext } from "../../services/Authentication.context";
 const Header = () => {
   const navigate = useNavigate();
   const { handleLogout } = useContext(AuthenticationContext);
+  const { user } = useContext(AuthenticationContext);
 
   const [showSearch, setShowSearch] = useState(false);
   const [showMyList, setShowMyList] = useState(false);
@@ -22,7 +23,7 @@ const Header = () => {
 
   const [navLinkSelected, setNavLinkSelected] = useState("");
 
-  const isLogged = true; // FALTA CONTEXT
+  const isLogged = user;
   const userRole = ""; // FALTA CONTEXT DE ROLES DE USUARIO
 
   useEffect(() => {
@@ -45,7 +46,7 @@ const Header = () => {
 
   const handleClickLogout = () => {
     handleLogout();
-    navigate("/login");
+    navigate("/");
   };
 
   const handleScroll = () => {

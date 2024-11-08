@@ -4,12 +4,14 @@ import { getMovieById } from "../../../services/homeServices";
 import "./preReproMovie.css"; // Importar los estilos
 import MediaList from "../../shared/MediaList";
 import { getMovieByGenre } from "../../../services/movieServices";
+import { useNavigate } from "react-router-dom";
 
 const PreReproMovie = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState({});
   const [related, setRelated] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const [showInformation, setShowInformation] = useState(true);
   const [showRelated, setShowRelated] = useState(false);
@@ -46,6 +48,10 @@ const PreReproMovie = () => {
       setError(error);
       console.error("There was a problem with the fetch operation:", error);
     }
+  };
+
+  const handleWatchMovie = (movieId) => {
+    navigate(`/watch/${movieId}`);
   };
 
   const handleShowInformation = () => {
