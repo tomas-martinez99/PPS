@@ -1,0 +1,24 @@
+.ep-card {
+  border: 2px solid #fff; /* Borde blanco */
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 15px; /* Espaciado interno */
+  transition: transform 0.2s, box-shadow 0.2s; /* Animación suave */
+}
+
+.ep-card:hover {
+  transform: scale(1.03); /* Aumenta el tamaño al hacer hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra en hover */
+}
+
+.view-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.view-button:hover {
+  background-color: #0056b3; /* Color más oscuro en hover */
+}

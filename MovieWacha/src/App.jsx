@@ -23,6 +23,8 @@ import UserNotPermis from "./components/pages/UserNotPermis";
 import AbmUser from "./components/admin/abmUser/abmUser";
 import Statistics from "./components/statistics/Statistics";
 import AbmGenres from "./components/admin/abmGenres/AbmGenres";
+import WatchSerie from "./components/watchSerie/watchSerie";
+import Profile from "./components/profile/Profile";
 
 function App() {
   const router = createBrowserRouter([
@@ -68,7 +70,11 @@ function App() {
     },
     {
       path: "/profile",
-      element: <MainLayout>{/* <Profile/> */}</MainLayout>,
+      element: (
+        <MainLayout>
+          <Profile />
+        </MainLayout>
+      ),
     },
     {
       path: "/movies",
@@ -87,7 +93,7 @@ function App() {
       element: (
         <MainLayout>
           <ProtectedAdmin>
-          <AbmSeries />
+            <AbmSeries />
           </ProtectedAdmin>
         </MainLayout>
       ),
@@ -97,7 +103,7 @@ function App() {
       element: (
         <MainLayout>
           <ProtectedAdmin>
-          <AbmUser />
+            <AbmUser />
           </ProtectedAdmin>
         </MainLayout>
       ),
@@ -134,12 +140,20 @@ function App() {
         </MainLayout>
       ),
     },
-   
+
     {
       path: "/watch/:movieId",
       element: (
         <MainLayout>
           <WatchMovie />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/watch-serie/:epId",
+      element: (
+        <MainLayout>
+          <WatchSerie />
         </MainLayout>
       ),
     },
@@ -171,7 +185,7 @@ function App() {
       path: "/userNotPermis",
       element: (
         <MainLayout>
-          <UserNotPermis/>
+          <UserNotPermis />
         </MainLayout>
       ),
     },
@@ -179,7 +193,7 @@ function App() {
       path: "/statistics",
       element: (
         <MainLayout>
-          <Statistics/>
+          <Statistics />
         </MainLayout>
       ),
     },

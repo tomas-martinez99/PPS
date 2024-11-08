@@ -17,8 +17,8 @@ const Card = ({ item }) => {
           src={
             item.movieCoverUrl
               ? item.movieCoverUrl
-              : item.sereiCoverUrl
-              ? item.sereiCoverUrl
+              : item.serieCoverUrl
+              ? item.serieCoverUrl
               : item.coverImageUrl
               ? item.coverImageUrl
               : null

@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { getMovieById } from "../../services/homeServices";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useRef } from "react";
+import { getEpisodeById } from "../../services/seriesServices";
 import { AuthenticationContext } from "../../services/Authentication.context";
 
-const WatchMovie = () => {
+const WatchSerie = () => {
   const { user } = useContext(AuthenticationContext);
 
-  const { movieId } = useParams();
+  const navigate = useNavigate();
+  const { epId } = useParams();
   const [error, setError] = useState(null);
-  const [movieById, setMovieById] = useState();
+  const [epById, setEpById] = useState();
   const videoRef = useRef(null);
 
   const userState = user?.subscriptionState;
@@ -23,10 +24,12 @@ const WatchMovie = () => {
           throw new Error("No token found");
         }
 
-        const result = await getMovieById(movieId);
-        setMovieById(result);
+        const result = await getEpisodeById(epId);
+        setEpById(result);
 
-        const fileName = result.movieVideo.fileName;
+        console.log("epById", epById);
+
+        const fileName = result.episodeVideo.fileName;
 
         const response = await fetch(
           `https://localhost:7289/api/media/protected/${fileName}`,
@@ -55,9 +58,9 @@ const WatchMovie = () => {
     };
 
     fetchData();
-  }, [movieId]);
+  }, [epId]);
 
-  if (!movieById) {
+  if (!epId) {
     return <div>Cargando...</div>;
   }
 
@@ -66,7 +69,7 @@ const WatchMovie = () => {
       {!user && (
         <div>
           <p>
-            Debes estar logueado para ver esta Película{" "}
+            Debes estar logueado para ver esta serie{" "}
             <Link to={"/login"}>Click aquí</Link> para loguearte
           </p>
         </div>
@@ -75,7 +78,7 @@ const WatchMovie = () => {
       {user && userState != "Active" && (
         <div>
           <p>
-            Debes suscribirte para ver esta Película{" "}
+            Debes suscribirte para ver esta serie{" "}
             <Link to={"/selectPlan"}>Click aquí </Link> para suscribirte
           </p>
         </div>
@@ -83,7 +86,7 @@ const WatchMovie = () => {
 
       {user && userState == "Active" && (
         <>
-          <h1>Ver Película: {movieById.title}</h1>
+          <h1>Ver Episodio: {epById?.title}</h1>
           <video ref={videoRef} controls width="100%">
             Tu navegador no soporta la etiqueta de video.
           </video>
@@ -93,4 +96,4 @@ const WatchMovie = () => {
   );
 };
 
-export default WatchMovie;
+export default WatchSerie;

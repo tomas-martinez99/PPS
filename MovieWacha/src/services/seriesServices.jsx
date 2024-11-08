@@ -38,8 +38,8 @@ export const getSerieById = async (id) => {
 
 export const addSeries = async (seriesData) => {
   try {
-    const token = localStorage.getItem('token');
-    console.log(seriesData, "servicio add")
+    const token = localStorage.getItem("token");
+    console.log(seriesData, "servicio add");
     if (!token) {
       console.error("Token no disponible. Por favor, inicia sesión.");
       throw new Error("Token no disponible");
@@ -48,8 +48,8 @@ export const addSeries = async (seriesData) => {
       method: "POST",
       mode: "cors",
       headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(seriesData),
     });
@@ -70,9 +70,9 @@ export const addSeries = async (seriesData) => {
 
 export const updateSeries = async (Id, seriesData) => {
   try {
-    const token = localStorage.getItem('token');
-    console.log(seriesData, "servicio update",Id, "id ");
-    
+    const token = localStorage.getItem("token");
+    console.log(seriesData, "servicio update", Id, "id ");
+
     if (!token) {
       console.error("Token no disponible. Por favor, inicia sesión.");
       throw new Error("Token no disponible");
@@ -81,15 +81,16 @@ export const updateSeries = async (Id, seriesData) => {
       method: "PUT",
       mode: "cors",
       headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(seriesData),
-
     });
     if (!response.ok) {
       const errorText = await response.text();
-      const errorData = errorText ? JSON.parse(errorText) : { message: "Respuesta vacía del servidor" };
+      const errorData = errorText
+        ? JSON.parse(errorText)
+        : { message: "Respuesta vacía del servidor" };
       console.error("Error del servidor:", errorData);
       throw new Error("Error al actualizar la serie");
     }
@@ -105,14 +106,13 @@ export const updateSeries = async (Id, seriesData) => {
 };
 
 export const deleteSerie = async (id) => {
-  const token = localStorage.getItem('token');
-  const response = await fetch(`${API_URL}/delete/${id}`,
-    {
-      method: "DELETE",
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    });
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/delete/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   if (!response.ok) {
     throw new Error("Error al eliminar la serie");
   }
@@ -138,14 +138,14 @@ export const getSeason = async (id) => {
 
 export const addSeason = async (seasonData) => {
   try {
-    const token = localStorage.getItem('token');
-    console.log(seasonData, "serie add")
+    const token = localStorage.getItem("token");
+    console.log(seasonData, "serie add");
     const response = await fetch(`${API_URL}/add-season`, {
       method: "POST",
       mode: "cors",
       headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(seasonData),
     });
@@ -158,32 +158,32 @@ export const addSeason = async (seasonData) => {
     console.error("Error fetching data:", error);
     throw error;
   }
-}
+};
 
 export const deleteSeason = async (id) => {
-  const token = localStorage.getItem('token');
-  const response = await fetch(`${API_URL}/delete-season-from-serie`,
-    {
-      method: "DELETE",
-      headers: {
-        "Authorization": `Bearer ${token}`
-      },body: JSON.stringify(id),
-    });
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/delete-season-from-serie`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(id),
+  });
   if (!response.ok) {
     throw new Error("Error al eliminar la serie");
   }
 };
 
-export const updateSeason = async (id, seasonData) =>{
+export const updateSeason = async (id, seasonData) => {
   try {
-    const token = localStorage.getItem('token');
-    console.log(seasonData, "serie add", id)
+    const token = localStorage.getItem("token");
+    console.log(seasonData, "serie add", id);
     const response = await fetch(`${API_URL}/update-season/${id}`, {
       method: "PUT",
       mode: "cors",
       headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(seasonData),
     });
@@ -196,8 +196,7 @@ export const updateSeason = async (id, seasonData) =>{
     console.error("Error fetching data:", error);
     throw error;
   }
-
-}
+};
 //Episodios
 export const getEpisode = async (id) => {
   try {
@@ -233,16 +232,33 @@ export const getEpisodeFromSeason = async (id) => {
   }
 };
 
+export const getEpisodeById = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/get-episode/${id}`, {
+      method: "GET",
+      mode: "cors",
+    });
+    if (!response.ok) {
+      throw new Error("No se encontro el Episodio");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
 export const addEpisode = async (episodeData) => {
   try {
-    const token = localStorage.getItem('token');
-    console.log(episodeData, "episodio add")
+    const token = localStorage.getItem("token");
+    console.log(episodeData, "episodio add");
     const response = await fetch(`${API_URL}/add-season/`, {
       method: "POST",
       mode: "cors",
       headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(episodeData),
     });
@@ -255,4 +271,4 @@ export const addEpisode = async (episodeData) => {
     console.error("Error fetching data:", error);
     throw error;
   }
-}
+};

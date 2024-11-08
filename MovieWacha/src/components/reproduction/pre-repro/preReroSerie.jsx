@@ -1,25 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getMovieById } from "../../../services/homeServices";
 import "./preReproMovie.css"; // Importar los estilos
 import MediaList from "../../shared/MediaList";
 import { getMovieByGenre } from "../../../services/movieServices";
-import { getSerieById } from "../../../services/seriesServices";
+import {
+  getEpisodeFromSeason,
+  getSerieById,
+} from "../../../services/seriesServices";
 
 const PreReproSerie = () => {
+  const navigate = useNavigate();
   const { serieId } = useParams();
   const [serie, setSerie] = useState({});
+  const [temporadas, setTemporadas] = useState([]);
+  const [temporadaSelected, setTemporadasSelected] = useState(1);
+  const [episodes, setEpisodes] = useState([]);
   const [related, setRelated] = useState([]);
   const [error, setError] = useState(null);
 
-  const [showInformation, setShowInformation] = useState(true);
+  const [showInformation, setShowInformation] = useState(false);
   const [showRelated, setShowRelated] = useState(false);
+  const [showTemporadas, setShowTemporadas] = useState(true);
 
   useEffect(() => {
     const fetchSerie = async () => {
       try {
         const result = await getSerieById(serieId);
         setSerie(result);
+        setTemporadas(result.seasons);
         console.log(result);
       } catch (error) {
         setError(error);
@@ -28,13 +37,15 @@ const PreReproSerie = () => {
     };
 
     const fetchEpisodeFromSerie = async () => {
-      try{
-        const result = await getEpisodeFromSeason(serieEpisode)
+      try {
+        const result = await getEpisodeFromSeason(temporadaSelected);
+        setEpisodes(result);
+        console.log("episodes", result);
       } catch (error) {
         setError(error);
         console.error("There was a problem with the fetch operation:", error);
       }
-    }
+    };
 
     fetchSerie();
     fetchEpisodeFromSerie();
@@ -63,17 +74,28 @@ const PreReproSerie = () => {
 
   const handleShowInformation = () => {
     setShowRelated(false);
+    setShowTemporadas(false);
     setShowInformation(true);
+  };
+
+  const handleShowTemporadas = () => {
+    setShowInformation(false);
+    setShowRelated(false);
+    setShowTemporadas(true);
   };
 
   const handleShowRelated = () => {
     setShowInformation(false);
+    setShowTemporadas(false);
     setShowRelated(true);
     // FALTA SERIES POR GENERO
 
     //fetchMoviesByAllGenres(movie.genres);
   };
-  console.log(serie);
+
+  const handleWatchSerie = () => {
+    navigate("/watch-serie/" + serieId);
+  };
 
   return (
     <div>
@@ -89,7 +111,7 @@ const PreReproSerie = () => {
               className="see-button"
               onClick={() => handleWatchSerie(serie.id)}
             >
-              Ver Ahora
+              Ver Ahora Cap 1
             </button>
 
             <button
@@ -109,17 +131,23 @@ const PreReproSerie = () => {
       </div>
       <div className="extra-container">
         <button
+          onClick={handleShowTemporadas}
+          className={showTemporadas ? "active" : ""}
+        >
+          Temporadas
+        </button>
+        <button
           onClick={handleShowInformation}
           className={showInformation ? "active" : ""}
         >
           Información
         </button>
-        <button
+        {/* <button
           onClick={handleShowRelated}
           className={showRelated ? "active" : ""}
         >
           Relacionados
-        </button>
+        </button> */}
       </div>
       <div className="separator"></div>
       {showRelated && (
@@ -144,6 +172,34 @@ const PreReproSerie = () => {
           <p>
             Idiomas: <strong>{serie.language}</strong>
           </p>
+        </div>
+      )}
+      {showTemporadas && (
+        <div className="container my-3">
+          <div className="row">
+            <div className="col-md-1">
+              <div className="tempo-container">
+                <h5 className="mb-2">Temporadas:</h5>
+                <select
+                  className="form-select"
+                  name=""
+                  id=""
+                  onChange={(e) => setTemporadasSelected(e.target.value)}
+                >
+                  {temporadas.map((tempo) => (
+                    <option key={tempo.id} value={tempo.id}>
+                      {tempo.seasonNumber}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="col-md-12 mt-4">
+              <div className="ep-container">
+                <MediaList ep={episodes}></MediaList>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

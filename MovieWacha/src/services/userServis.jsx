@@ -1,13 +1,13 @@
 const API_URL = "https://localhost:7289/api/user";
 
 export const getAllUser = async () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   try {
     const response = await fetch(`${API_URL}/get-all`, {
       method: "GET",
       mode: "cors",
       headers: {
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     if (!response.ok) {
@@ -22,37 +22,44 @@ export const getAllUser = async () => {
 };
 
 export const deleteUser = async (name) => {
-  const token = localStorage.getItem('token');
-  const response = await fetch(`${API_URL}/delete/${name}`,
-    {
-      method: "DELETE",
-      mode: "cors",
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    });
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/delete/${name}`, {
+    method: "DELETE",
+    mode: "cors",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   if (!response.ok) {
     throw new Error("Error al eliminar el usuario");
   }
 };
 
-export const updateUser = async ( userData,name) => {
+export const updateUser = async (userData, name) => {
   try {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${API_URL}/update/${name}`,
-      {
-        method: "PUT",
-        mode: "cors",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(userData),
-      });
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Error del servidor:", errorData);
-      throw new Error("Error al agregar la serie");
+    console.log("Actualizando usuario:", userData);
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${API_URL}/update/${name}`, {
+      method: "PUT",
+      mode: "cors",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
+    if (response.status === 401 || response.status === 403) {
+      throw new Error("Usted no esta autorizado para hacer esta accion");
+    }
+
+    if (response.status === 400) {
+      throw new Error(
+        "Un error ha ocurrido al modificar la pelicula, revisa la consola"
+      );
+    }
+
+    if (response.status === 404) {
+      throw new Error("No se ha encontrado la pelicula a modificar");
     }
 
     const data = await response.json();
@@ -62,4 +69,4 @@ export const updateUser = async ( userData,name) => {
     console.error("Error al agregar la serie:", error.message);
     throw error;
   }
-}
+};

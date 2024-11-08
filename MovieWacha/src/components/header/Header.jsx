@@ -24,7 +24,9 @@ const Header = () => {
   const [navLinkSelected, setNavLinkSelected] = useState("");
 
   const isLogged = user;
-  const userRole = ""; // FALTA CONTEXT DE ROLES DE USUARIO
+
+  console.log("user", user);
+  const userRole = user?.role; // FALTA CONTEXT DE ROLES DE USUARIO
 
   useEffect(() => {
     const currentPath = window.location.pathname;
@@ -86,11 +88,20 @@ const Header = () => {
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll" className="justify-content-between">
           <Nav className="mx-auto">
-            {userRole === "admin" ? (
+            {userRole === "Admin" ? (
               <>
-                <Nav.Link onClick={() => navigate("/")}>Administrar x</Nav.Link>
-                <Nav.Link onClick={() => navigate("/")}>Administrar x</Nav.Link>
-                <Nav.Link onClick={() => navigate("/")}>Administrar x</Nav.Link>
+                <Nav.Link onClick={() => navigate("/abmSeries")}>
+                  Series
+                </Nav.Link>
+                <Nav.Link onClick={() => navigate("/abmMovies")}>
+                  Peliculas
+                </Nav.Link>
+                <Nav.Link onClick={() => navigate("/abmUser")}>
+                  Usuarios
+                </Nav.Link>
+                <Nav.Link onClick={() => navigate("/statistics")}>
+                  Estadisticas
+                </Nav.Link>
               </>
             ) : (
               <>

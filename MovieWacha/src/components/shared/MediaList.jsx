@@ -7,8 +7,9 @@ import "swiper/css/pagination";
 import "./mediaList.css";
 import { useNavigate } from "react-router-dom";
 import Card from "./card/Card";
+import CardEpisode from "./card/CardEpisode";
 
-const MediaList = ({ movies, series }) => {
+const MediaList = ({ movies, series, ep }) => {
   const [combinedByGenre, setCombinedByGenre] = useState({});
   const [soloParaTi, setSoloParaTi] = useState([]);
   const [miLista, setMiLista] = useState([]);
@@ -62,7 +63,26 @@ const MediaList = ({ movies, series }) => {
   return (
     <div>
       {/* Sliders por género o lista única para pre-repro */}
-      {url.includes("pre-repro") ? (
+      {ep ? (
+        <div className="media-container">
+          <Swiper
+            modules={[Navigation, Pagination]}
+            spaceBetween={10}
+            slidesPerView={5}
+            navigation
+            loop={false}
+          >
+            {ep.map((item) => (
+              <SwiperSlide key={item.id}>
+                <CardEpisode item={item} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      ) : (
+        <p></p>
+      )}
+      {url.includes("pre-repro") && !ep ? (
         <div className="media-container">
           <Swiper
             modules={[Navigation, Pagination]}
@@ -81,7 +101,7 @@ const MediaList = ({ movies, series }) => {
                 )
               )
             ) : (
-              <p>No hay contenido disponible.</p>
+              <p></p>
             )}
           </Swiper>
         </div>
@@ -97,15 +117,18 @@ const MediaList = ({ movies, series }) => {
               loop={false}
             >
               {combinedByGenre[genre].map((item) => (
-                <SwiperSlide key={item.id}>
+                <SwiperSlide key={item.id} className="mt-3">
                   <Card item={item} />
+                  <p style={{ textAlign: "center", color: "#d3d3d3" }}>
+                    {item.title}
+                  </p>
                 </SwiperSlide>
               ))}
             </Swiper>
           </div>
         ))
       ) : (
-        <p>No hay contenido disponible.</p>
+        <p></p>
       )}
     </div>
   );
