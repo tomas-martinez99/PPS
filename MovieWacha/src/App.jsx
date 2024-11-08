@@ -21,6 +21,7 @@ import SearchResults from "./components/search-results/SearchResults";
 import ProtectedAdmin from "./protected/ProtectedAdmin";
 import UserNotPermis from "./components/pages/UserNotPermis";
 import AbmUser from "./components/admin/abmUser/abmUser";
+import Statistics from "./components/statistics/Statistics";
 import AbmGenres from "./components/admin/abmGenres/AbmGenres";
 
 function App() {
@@ -80,10 +81,6 @@ function App() {
     {
       path: "/series",
       element: <MainLayout>{<Series />}</MainLayout>,
-    },
-    {
-      path: "/statistics",
-      element: <MainLayout>{/* <Statistics/> */}</MainLayout>,
     },
     {
       path: "/abmSeries",
@@ -175,6 +172,14 @@ function App() {
       element: (
         <MainLayout>
           <UserNotPermis/>
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/statistics",
+      element: (
+        <MainLayout>
+          <Statistics/>
         </MainLayout>
       ),
     },
