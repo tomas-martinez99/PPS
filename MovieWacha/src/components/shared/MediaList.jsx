@@ -44,7 +44,13 @@ const MediaList = ({ movies, series, ep, favorites }) => {
     }
 
     if (miLista.length > 0) {
-      combined["Mi lista"] = miLista;
+      if (url.includes("movies")) {
+        combined["Mi lista"] = miLista.filter((item) => item.type === 0);
+      } else if (url.includes("series")) {
+        combined["Mi lista"] = miLista.filter((item) => item.type === 1);
+      } else {
+        combined["Mi lista"] = miLista;
+      }
     }
 
     const addByGenre = (items, type) => {
