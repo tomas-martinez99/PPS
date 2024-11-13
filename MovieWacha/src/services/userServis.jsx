@@ -23,9 +23,13 @@ export const getAllUser = async () => {
 
 export const deleteUser = async (name) => {
   const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("No token found, authorization required.");
+  }
+  console.log(token)
+  console.log(name)
   const response = await fetch(`${API_URL}/delete/${name}`, {
     method: "DELETE",
-    mode: "cors",
     headers: {
       Authorization: `Bearer ${token}`,
     },

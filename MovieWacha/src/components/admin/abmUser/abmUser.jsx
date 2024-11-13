@@ -95,7 +95,7 @@ const AbmUser = () => {
   //Delete
   const handleDeletUser = (name) => {
     deleteUser(name);
-    refreshPage();
+    
   };
 
   return (

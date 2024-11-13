@@ -1,5 +1,6 @@
 const API_URL = "https://localhost:7289/api/auth";
 
+
 export const loginUser = async (email, password) => {
   try {
     const response = await fetch(`${API_URL}/login`, {
@@ -60,17 +61,29 @@ export const registerUser = async (userData) => {
 
 export const refreshSession = async () => {
   const token = localStorage.getItem('token');
-  const response = await fetch(`${API_URL}/refresh`,{
-    method:"GET",
-    mode:"cors",
-    headers: {
-      "Authorization": `Bearer ${token}` 
-    },
-  })
-  const data = await response.text()
-  if(response.ok){
-    console.log(data)
+  if (!token) {
+    console.error("Token no encontrado en localStorage");
+    return;
   }
-}
 
+  try {
+    const response = await fetch(`${API_URL}/refresh`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+    if (response.ok) {
+      const data = await response.text();
+      localStorage.removeItem("token"); 
+     
+      if (!data) {  
+        console.error("Respuesta vacía en la actualización de sesión");
+    }
+    return data
+  } }catch (error) {
+    console.error("Error de red en refreshSession:", error);
+  }
+};
 

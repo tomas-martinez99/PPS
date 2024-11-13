@@ -50,11 +50,12 @@ const reducer = (state, action) => {
     }
 };
 
-const ModalAddSeries = ({ onClose, }) => {
+const ModalAddSeries = ({ onClose,onRefresh }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const [showRegisterErrorAlert, setShowRegisterErrorAlert] = useState(false)
     const [showRegisterErrorAlertMessage, setShowRegisterErrorAlertMessage] = useState("")
 
+    
     // Maneja el envío del formulario
     const handleSave = async (e) => {
         e.preventDefault();
@@ -64,11 +65,12 @@ const ModalAddSeries = ({ onClose, }) => {
        
 
         // Verificar si hay algún campo con error y establecer el mensaje correspondiente
-        if (state.errors) {
+        const hasErrors = Object.values(state.errors).some((error) => error === true);
+        if (hasErrors) {
             setShowRegisterErrorAlert(true);
-            setShowRegisterErrorAlertMessage("Completa todos los campos ")
+            setShowRegisterErrorAlertMessage("Completa todos los campos");
             return;
-          }
+        }
 
 
         const seriesData = {
@@ -82,10 +84,13 @@ const ModalAddSeries = ({ onClose, }) => {
 
         try {
             await addSeries(seriesData);
-            console.log('Serie agregada correctamente');
+            
             dispatch({ type: "RESET_FORM" });
-            setShowRegisterErrorAlert(false)
-            onClose(); // Cierra el formulario al guardar correctamente
+            setShowRegisterErrorAlert(false);
+            if (onRefresh) {
+                onRefresh();
+            }
+            onClose();
         } catch (error) {
             console.error('Error al guardar la serie:', error);
         }
@@ -176,7 +181,7 @@ const ModalAddSeries = ({ onClose, }) => {
 
 ModalAddSeries.propTypes = {
     onClose: PropTypes.func.isRequired,
-    serieToEdit: PropTypes.object
+    onRefresh: PropTypes.func.isRequired
 };
 
 export default ModalAddSeries;

@@ -14,7 +14,7 @@ const SelectPlan = () => {
 
       <div className="plan-card">
         <h3>Movie Wacha Premium</h3>
-        <h4 className="plan-price">ARS$2</h4>
+        <h4 className="plan-price">ARS$1</h4>
         <button className="select-plan-button" onClick={navigateClick}>SELECCIONAR PLAN</button>
         <ul className="plan-features">
           <li>Acceso a todas las películas y series sin anuncios</li>

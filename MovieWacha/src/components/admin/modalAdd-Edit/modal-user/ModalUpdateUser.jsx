@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { updateUser } from "../../../../services/userServis";
 
 const ModalUpdateUser = ({ name, email, role, onClose }) => {
   console.log("name", name, "email", email, "role", role);
-  const [newName, setNewName] = useState(name);
-  const [newRole, setNewRole] = useState(role);
-  const [newEmail, setNewEmail] = useState(email);
+  const [newName, setNewName] = useState(null);
+  const [newRole, setNewRole] = useState(null);
+  const [newEmail, setNewEmail] = useState(null);
+  useEffect (()=>{
+    setNewEmail(email)
+    setNewName(name)
+    setNewRole(role)
+    console.log(newEmail,newName,newRole,"Estado inicial")
+  },[])
 
   const handleSave = async () => {
     const userData = {

@@ -16,7 +16,7 @@ export const successPay = async (paymentId) =>{
             console.log("Pagaste")
         }
     }catch (error) {
-        console.error("Error MP Success", error.message);
+        console.error("Error MP Success", error);
         throw error; // Lanza el error para manejarlo en el componente
     }
 }
