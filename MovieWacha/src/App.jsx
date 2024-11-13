@@ -27,6 +27,8 @@ import WatchSerie from "./components/watchSerie/watchSerie";
 import Profile from "./components/profile/Profile";
 import ChangePassword from "./components/change-password/ChangePassword";
 import MyList from "./components/my-list/MyList";
+import ForgotPassword from "./components/forgot-password/ForgotPassword";
+import ResetPassword from "./components/forgot-password/ResetPassword";
 
 function App() {
   const router = createBrowserRouter([
@@ -67,6 +69,22 @@ function App() {
       element: (
         <MainLayout>
           <RegisterSuccess />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/forgot-my-password",
+      element: (
+        <MainLayout>
+          <ForgotPassword />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/reset-password",
+      element: (
+        <MainLayout>
+          <ResetPassword />
         </MainLayout>
       ),
     },

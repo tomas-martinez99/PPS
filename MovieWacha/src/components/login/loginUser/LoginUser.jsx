@@ -131,7 +131,7 @@ const LoginUser = () => {
                 variant="link"
                 className="fw-bold pt-1"
                 onClick={() => {
-                  navigate("");
+                  navigate("/forgot-my-password");
                 }}>
                 Olvidaste tu contraseña?
               </Button>
