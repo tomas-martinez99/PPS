@@ -1,4 +1,4 @@
-mport { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 const API_URL = "https://localhost:7289/api";
 
 const UseGetUser = (movieId) => {
