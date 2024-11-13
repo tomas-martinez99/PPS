@@ -5,11 +5,17 @@ import "./preReproMovie.css"; // Importar los estilos
 import MediaList from "../../shared/MediaList";
 import { getMovieByGenre } from "../../../services/movieServices";
 import { useNavigate } from "react-router-dom";
+import {
+  addFavorites,
+  deleteFavorite,
+  getFavorites,
+} from "../../../services/FavoritesService";
 
 const PreReproMovie = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState({});
   const [related, setRelated] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -30,6 +36,53 @@ const PreReproMovie = () => {
 
     fetchMovie();
   }, [movieId]);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const result = await getFavorites();
+        setFavorites(result);
+        console.log("favorites", result);
+      } catch (error) {
+        setError(error);
+        console.error("There was a problem with the fetch operation:", error);
+      }
+    };
+    fetchFavorites();
+  }, []);
+
+  const addToMyList = async (movie) => {
+    try {
+      const request = {
+        id: movie.id,
+        type: 0,
+      };
+      const response = await addFavorites(request);
+      console.log("Película agregada a la lista:", response);
+
+      setFavorites((prevFavorites) => [...prevFavorites, movie]);
+    } catch (error) {
+      console.error(
+        "No se pudo agregar la película a la lista:",
+        error.message
+      );
+    }
+  };
+
+  const deletefromMyList = async (movieId) => {
+    try {
+      const response = await deleteFavorite(movieId, 0);
+      console.log("Película eliminada a la lista:", response);
+      setFavorites((prevFavorites) =>
+        prevFavorites.filter((fav) => fav.id !== movieId)
+      );
+    } catch (error) {
+      console.error(
+        "No se pudo eliminar la película a la lista:",
+        error.message
+      );
+    }
+  };
 
   const fetchMoviesByAllGenres = async (genres) => {
     try {
@@ -82,12 +135,21 @@ const PreReproMovie = () => {
               Ver Ahora
             </button>
 
-            <button
-              className="add-list-button"
-              onClick={() => addToMyList(movie.id)}
-            >
-              Agregar a mi lista
-            </button>
+            {favorites.find((fav) => fav.title == movie.title) ? (
+              <button
+                className="add-list-button"
+                onClick={() => deletefromMyList(movie.id)}
+              >
+                Eliminar de mi lista
+              </button>
+            ) : (
+              <button
+                className="add-list-button"
+                onClick={() => addToMyList(movie)}
+              >
+                Agregar a mi lista
+              </button>
+            )}
           </div>
         </div>
         <img

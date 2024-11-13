@@ -35,6 +35,20 @@ export const deleteUser = async (name) => {
   }
 };
 
+export const deleteMyAccount = async () => {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/delete-my-account`, {
+    method: "DELETE",
+    mode: "cors",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status != 204) {
+    throw new Error("Error al eliminar el usuario");
+  }
+};
+
 export const updateUser = async (userData, name) => {
   try {
     console.log("Actualizando usuario:", userData);
@@ -65,6 +79,35 @@ export const updateUser = async (userData, name) => {
     const data = await response.json();
     console.log("Serie Actualizada", data);
     return data;
+  } catch (error) {
+    console.error("Error al agregar la serie:", error.message);
+    throw error;
+  }
+};
+
+export const changePassword = async (passwordData) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${API_URL}/change-password`, {
+      method: "PUT",
+      mode: "cors",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(passwordData),
+    });
+    if (response.status === 401 || response.status === 403) {
+      throw new Error("Usted no esta autorizado para hacer esta accion");
+    }
+
+    if (response.status === 400) {
+      throw new Error("La contraseña actual es incorrecta");
+    }
+
+    if (response.status != 204) {
+      throw new Error("Ha ocurrido un error");
+    }
   } catch (error) {
     console.error("Error al agregar la serie:", error.message);
     throw error;

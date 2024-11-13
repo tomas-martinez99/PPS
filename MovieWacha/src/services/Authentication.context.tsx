@@ -1,8 +1,7 @@
 import { useState, createContext } from "react";
 import React from "react";
 import PropTypes from "prop-types";
-import  {  jwtDecode  }  from  "jwt-decode" ;
-
+import { jwtDecode } from "jwt-decode";
 
 export const AuthenticationContext = createContext({});
 
@@ -17,23 +16,26 @@ export const AuthenticationContextProvider = ({ children }) => {
   const handleLogin = (user) => {
     localStorage.setItem("token", user);
     setToken(user);
-    
+
     const decodedUserData = jwtDecode(user);
     setUser(decodedUserData);
+    console.log("user auth", decodedUserData);
 
-    console.log(decodedUserData, "datos user")
-    console.log(token,"token context")
+    console.log(decodedUserData, "datos user");
+    console.log(token, "token context");
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token"); // Elimina el token
     console.log("Cierre de sesión exitoso");
     setUser(null);
-    setToken(null)
+    setToken(null);
   };
 
   return (
-    <AuthenticationContext.Provider value={{ user,token, handleLogin, handleLogout}}>
+    <AuthenticationContext.Provider
+      value={{ user, token, handleLogin, handleLogout }}
+    >
       {children}
     </AuthenticationContext.Provider>
   );
