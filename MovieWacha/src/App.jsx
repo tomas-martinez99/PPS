@@ -25,6 +25,10 @@ import Statistics from "./components/statistics/Statistics";
 import AbmGenres from "./components/admin/abmGenres/AbmGenres";
 import WatchSerie from "./components/watchSerie/watchSerie";
 import Profile from "./components/profile/Profile";
+import ChangePassword from "./components/change-password/ChangePassword";
+import MyList from "./components/my-list/MyList";
+import ForgotPassword from "./components/forgot-password/ForgotPassword";
+import ResetPassword from "./components/forgot-password/ResetPassword";
 
 function App() {
   const router = createBrowserRouter([
@@ -65,6 +69,22 @@ function App() {
       element: (
         <MainLayout>
           <RegisterSuccess />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/forgot-my-password",
+      element: (
+        <MainLayout>
+          <ForgotPassword />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/reset-password",
+      element: (
+        <MainLayout>
+          <ResetPassword />
         </MainLayout>
       ),
     },
@@ -194,6 +214,22 @@ function App() {
       element: (
         <MainLayout>
           <Statistics />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/change-password",
+      element: (
+        <MainLayout>
+          <ChangePassword />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/my-list",
+      element: (
+        <MainLayout>
+          <MyList />
         </MainLayout>
       ),
     },

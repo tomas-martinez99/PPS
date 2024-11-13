@@ -15,7 +15,6 @@ const Header = () => {
   const { user } = useContext(AuthenticationContext);
 
   const [showSearch, setShowSearch] = useState(false);
-  const [showMyList, setShowMyList] = useState(false);
 
   const [scrolled, setScrolled] = useState(false);
 
@@ -155,7 +154,7 @@ const Header = () => {
             <Button
               variant="dark"
               onClick={() => {
-                !isLogged ? navigate("/login") : setShowMyList(!showMyList);
+                !isLogged ? navigate("/login") : navigate("/my-list");
               }}
               className="me-2"
             >

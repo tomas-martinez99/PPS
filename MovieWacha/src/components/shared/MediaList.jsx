@@ -8,14 +8,29 @@ import "./mediaList.css";
 import { useNavigate } from "react-router-dom";
 import Card from "./card/Card";
 import CardEpisode from "./card/CardEpisode";
+import { getFavorites } from "../../services/FavoritesService";
 
-const MediaList = ({ movies, series, ep }) => {
+const MediaList = ({ movies, series, ep, favorites }) => {
   const [combinedByGenre, setCombinedByGenre] = useState({});
   const [soloParaTi, setSoloParaTi] = useState([]);
   const [miLista, setMiLista] = useState([]);
   const [continuarViendo, setContinuarViendo] = useState([]);
 
   const [url, setUrl] = useState(window.location.pathname);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const result = await getFavorites();
+        setMiLista(result);
+        console.log("favorites", result);
+      } catch (error) {
+        setError(error);
+        console.error("There was a problem with the fetch operation:", error);
+      }
+    };
+    fetchFavorites();
+  }, []);
 
   const combinedGenres = () => {
     const combined = {};
@@ -29,7 +44,13 @@ const MediaList = ({ movies, series, ep }) => {
     }
 
     if (miLista.length > 0) {
-      combined["Mi lista"] = miLista;
+      if (url.includes("movies")) {
+        combined["Mi lista"] = miLista.filter((item) => item.type === 0);
+      } else if (url.includes("series")) {
+        combined["Mi lista"] = miLista.filter((item) => item.type === 1);
+      } else {
+        combined["Mi lista"] = miLista;
+      }
     }
 
     const addByGenre = (items, type) => {
@@ -127,6 +148,25 @@ const MediaList = ({ movies, series, ep }) => {
             </Swiper>
           </div>
         ))
+      ) : favorites ? (
+        <div className="media-container">
+          <Swiper
+            modules={[Navigation, Pagination]}
+            spaceBetween={10}
+            slidesPerView={6}
+            navigation
+            loop={false}
+          >
+            {favorites.map((item) => (
+              <SwiperSlide key={item.id}>
+                <Card item={item} />
+                <p style={{ textAlign: "center", color: "#d3d3d3" }}>
+                  {item.title}
+                </p>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
       ) : (
         <p></p>
       )}

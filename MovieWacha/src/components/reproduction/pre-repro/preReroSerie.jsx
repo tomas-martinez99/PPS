@@ -8,6 +8,11 @@ import {
   getEpisodeFromSeason,
   getSerieById,
 } from "../../../services/seriesServices";
+import {
+  addFavorites,
+  deleteFavorite,
+  getFavorites,
+} from "../../../services/FavoritesService";
 
 const PreReproSerie = () => {
   const navigate = useNavigate();
@@ -17,6 +22,7 @@ const PreReproSerie = () => {
   const [temporadaSelected, setTemporadasSelected] = useState(1);
   const [episodes, setEpisodes] = useState([]);
   const [related, setRelated] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const [error, setError] = useState(null);
 
   const [showInformation, setShowInformation] = useState(false);
@@ -72,6 +78,47 @@ const PreReproSerie = () => {
   //     }
   //   };
 
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const result = await getFavorites();
+        setFavorites(result);
+        console.log("favorites", result);
+      } catch (error) {
+        setError(error);
+        console.error("There was a problem with the fetch operation:", error);
+      }
+    };
+    fetchFavorites();
+  }, []);
+
+  const addToMyList = async (serie) => {
+    try {
+      const request = {
+        id: serie.id,
+        type: 1,
+      };
+      const response = await addFavorites(request);
+      console.log("Serie agregada a la lista:", response);
+
+      setFavorites((prevFavorites) => [...prevFavorites, serie]);
+    } catch (error) {
+      console.error("No se pudo agregar la Serie a la lista:", error.message);
+    }
+  };
+
+  const deletefromMyList = async (serieId) => {
+    try {
+      const response = await deleteFavorite(serieId, 1);
+      console.log("Serie eliminada a la lista:", response);
+      setFavorites((prevFavorites) =>
+        prevFavorites.filter((fav) => fav.id !== serieId)
+      );
+    } catch (error) {
+      console.error("No se pudo eliminar la Serie a la lista:", error.message);
+    }
+  };
+
   const handleShowInformation = () => {
     setShowRelated(false);
     setShowTemporadas(false);
@@ -114,12 +161,21 @@ const PreReproSerie = () => {
               Ver Ahora Cap 1
             </button>
 
-            <button
-              className="add-list-button"
-              onClick={() => addToMyList(serie.id)}
-            >
-              Agregar a mi lista
-            </button>
+            {favorites.find((fav) => fav.title == serie.title) ? (
+              <button
+                className="add-list-button"
+                onClick={() => deletefromMyList(serie.id)}
+              >
+                Eliminar de mi lista
+              </button>
+            ) : (
+              <button
+                className="add-list-button"
+                onClick={() => addToMyList(serie)}
+              >
+                Agregar a mi lista
+              </button>
+            )}
           </div>
         </div>
         <img

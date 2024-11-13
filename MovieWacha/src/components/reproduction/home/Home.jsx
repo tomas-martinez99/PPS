@@ -9,12 +9,18 @@ import {
 import { useNavigate } from "react-router-dom";
 import MediaList from "../../shared/MediaList";
 import { getSeries } from "../../../services/seriesServices";
+import {
+  addFavorites,
+  deleteFavorite,
+  getFavorites,
+} from "../../../services/FavoritesService";
 
 const Home = () => {
   const [error, setError] = useState(null);
   const [movieShowcase, setMovieShowcase] = useState([]);
   const [movies, setMovies] = useState([]);
   const [series, setSeries] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const navigate = useNavigate();
 
   const [url, setUrl] = useState(window.location.pathname);
@@ -26,7 +32,7 @@ const Home = () => {
       try {
         const result = await getMoviesShowCase();
         setMovieShowcase(result);
-        console.log("Peliculas Cargada en home",result);
+        console.log("Peliculas Cargada en home", result);
       } catch (error) {
         setError(error);
         console.error("There was a problem with the fetch operation:", error);
@@ -60,12 +66,55 @@ const Home = () => {
     fetchAllSeries();
   }, []);
 
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const result = await getFavorites();
+        setFavorites(result);
+        console.log("favorites", result);
+      } catch (error) {
+        setError(error);
+        console.error("There was a problem with the fetch operation:", error);
+      }
+    };
+    fetchFavorites();
+  }, []);
+
   const handleWatchMovie = (movieId) => {
     navigate(`/watch/${movieId}`);
   };
 
-  const addToMyList = (movieId) => {
-    // FALTA
+  const addToMyList = async (movie) => {
+    try {
+      const request = {
+        id: movie.id,
+        type: 0,
+      };
+      const response = await addFavorites(request);
+      console.log("Película agregada a la lista:", response);
+
+      setFavorites((prevFavorites) => [...prevFavorites, movie]);
+    } catch (error) {
+      console.error(
+        "No se pudo agregar la película a la lista:",
+        error.message
+      );
+    }
+  };
+
+  const deletefromMyList = async (movieId) => {
+    try {
+      const response = await deleteFavorite(movieId, 0);
+      console.log("Película eliminada a la lista:", response);
+      setFavorites((prevFavorites) =>
+        prevFavorites.filter((fav) => fav.id !== movieId)
+      );
+    } catch (error) {
+      console.error(
+        "No se pudo eliminar la película a la lista:",
+        error.message
+      );
+    }
   };
 
   return (
@@ -87,13 +136,21 @@ const Home = () => {
                       >
                         Ver pelicula
                       </button>
-
-                      <button
-                        className="add-list-button"
-                        onClick={() => addToMyList(movie.id)}
-                      >
-                        Agregar a mi lista
-                      </button>
+                      {favorites.find((fav) => fav.title == movie.title) ? (
+                        <button
+                          className="add-list-button"
+                          onClick={() => deletefromMyList(movie.id)}
+                        >
+                          Eliminar de mi lista
+                        </button>
+                      ) : (
+                        <button
+                          className="add-list-button"
+                          onClick={() => addToMyList(movie)}
+                        >
+                          Agregar a mi lista
+                        </button>
+                      )}
                     </div>
                   </Carousel.Caption>
                 </Carousel.Item>

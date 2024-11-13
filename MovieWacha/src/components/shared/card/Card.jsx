@@ -21,6 +21,8 @@ const Card = ({ item }) => {
               ? item.serieCoverUrl
               : item.coverImageUrl
               ? item.coverImageUrl
+              : item.coverImage
+              ? item.coverImage
               : null
           }
           alt={item.title}
