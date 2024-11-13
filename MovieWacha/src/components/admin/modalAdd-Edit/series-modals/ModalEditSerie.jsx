@@ -22,8 +22,8 @@ const ModalEditSerie = ({id, onClose}) => {
                     synopsisRef.current.value = result.synopsis
                     urlRef.current.value = result.serieCoverUrl;
                     directorRef.current.value = result.director;
-                    genreRef.current.value = result.genre.join(", ");
-                    languageRef.current.value = result.language;
+                    genreRef.current.value = result.genres.join(", ");
+                    languageRef.current.value = result.language
                 }
                 console.log("series Cargadas en el abm", result)
             } catch (err) {

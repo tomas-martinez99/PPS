@@ -106,32 +106,29 @@ const AbmMovies = () => {
 
   return (
     <div className="table-container">
-      {isModalRemoveOpen ? (
+      {isModalRemoveOpen && (
         <ModalRemoveMovie
           id={selectedSerieId}
           onClose={handleCloseModalRemoveMovie}
           onDelete={handleDeleteMovie}
         />
-      ) : (
-        ""
-      )}
-      {isModalUpdateOpen ? (
+      ) 
+      }
+      {isModalUpdateOpen && (
         <ModalUpdateMovie
           id={selectedSerieId}
           onClose={handleCloseModalUpdateMovie}
           onUpdate={handleUpdateMovie}
         />
-      ) : (
-        ""
-      )}
-      {isModalAddOpen ? (
+      ) 
+      }
+      {isModalAddOpen && (
         <ModalAddMovie
           onClose={handleCloseModalAdd}
           onCreate={handleCreateMovie}
         />
-      ) : (
-        ""
-      )}
+      ) 
+      }
       <button className="add-button" onClick={handleOpenModalAdd}>
         Agregar Peliculas
       </button>

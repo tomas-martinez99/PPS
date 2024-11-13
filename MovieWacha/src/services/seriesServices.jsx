@@ -160,14 +160,13 @@ export const addSeason = async (seasonData) => {
   }
 };
 
-export const deleteSeason = async (id) => {
+export const deleteSeason = async (idSeason) => {
   const token = localStorage.getItem("token");
-  const response = await fetch(`${API_URL}/delete-season-from-serie`, {
+  const response = await fetch(`${API_URL}/delete-season-from-serie?idSeason=${idSeason}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(id),
   });
   if (!response.ok) {
     throw new Error("Error al eliminar la serie");
@@ -200,9 +199,13 @@ export const updateSeason = async (id, seasonData) => {
 //Episodios
 export const getEpisode = async (id) => {
   try {
-    const response = await fetch(`${API_URL}/get-episode-from-season/${id}`, {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${API_URL}/get-episodes-from-season/${id}`, {
       method: "GET",
       mode: "cors",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
     });
     if (!response.ok) {
       throw new Error("No se encontraron Las series");
@@ -270,5 +273,18 @@ export const addEpisode = async (episodeData) => {
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
+  }
+};
+
+export const deleteEpisode = async (id) => {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/delete-episode/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Error al eliminar la serie");
   }
 };

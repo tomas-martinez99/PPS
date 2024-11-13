@@ -16,7 +16,7 @@ const AbmSeries = () => {
     const [isModalAddSeason, setModalAddSeason] = useState(false)//Estado modal addSeason
     const [selectedSerieId, setSelectedSerieId] = useState(null);//Id de la serie pasado al componente de las temporadas
     const [isModalEditOpen, setModalEditOpen] = useState(false);//Modal de edicion de series
-    
+    const [refresh, setRefresh] = useState(false);
 
     // const refreshPage = () => {
     //     window.location.reload();
@@ -74,7 +74,16 @@ const AbmSeries = () => {
         }));
         console.log("id serie pasado a temporada", seriesId)
     };
+    const fetchSeriesList = async () => {
+        const data = await getSeries(); // Aquí llamas al servicio para obtener la lista
+        setSeries(data); // Actualizas el estado con la nueva lista de series
+    };
+    
+    useEffect(() => {
+        fetchSeriesList();
+    }, [refresh]);
 
+    const handleRefresh = () => setRefresh(!refresh);
 
 
     //Manejo estado BUSCADOR
@@ -113,6 +122,7 @@ const AbmSeries = () => {
             {isModalEditOpen && (<ModalEditSerie
                 id={selectedSerieId}
                 onClose={() => setModalEditOpen(false)}
+                onRefresh={handleRefresh}
                 />)}
             <button className="add-button" onClick={handleOpenModalAdd}>Agregar Series</button>
             {isModalAddOpen ?
@@ -143,7 +153,7 @@ const AbmSeries = () => {
                                     <tr className="row-series">
                                         <td>{series.id}</td>
                                         <td>{series.title}</td>
-                                        <td>{series.genre}</td>
+                                        <td>{series.genres?.join(", ")}</td>
                                         <td className="action-buttons">
                                             <button onClick={() => toggleSeries(series.id)}>
                                                 {expandedSeries[series.id] ? '▲' : '▼'}
