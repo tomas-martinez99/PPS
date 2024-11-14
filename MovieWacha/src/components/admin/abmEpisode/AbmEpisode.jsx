@@ -34,7 +34,7 @@ const AbmEpisode = ({ seasonId }) => {
         deleteEpisode(id)
     }
     return (
-        <table>
+        <>
             {isModalUpdateOpen && (
                 <ModalUpdateEpisode
                     id={selectedEpisodeId}
@@ -43,6 +43,7 @@ const AbmEpisode = ({ seasonId }) => {
                 />
             )
             }
+            
             {episodes.length > 0 ? episodes.map((episode) => (
                 <tr className="row-episode" key={episode.id}>
                     <td>{episode.id}</td>
@@ -58,7 +59,8 @@ const AbmEpisode = ({ seasonId }) => {
                 <td className="row-episode"></td>
                 <td className="row-episode"></td>
             </tr>}
-        </table>
+            
+        </>
     )
 }
 

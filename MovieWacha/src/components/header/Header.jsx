@@ -101,6 +101,9 @@ const Header = () => {
                 <Nav.Link onClick={() => navigate("/statistics")}>
                   Estadisticas
                 </Nav.Link>
+                <Nav.Link onClick={() => navigate("/abmGenres")}>
+                  Generos
+                </Nav.Link>
               </>
             ) : (
               <>

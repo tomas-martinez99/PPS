@@ -136,8 +136,8 @@ const AbmGenres = () => {
                                         <td>{genre.id}</td>
                                         <td>{genre.name}</td>
                                         <td className="action-buttons">
-                                            <button className="edit-btn" onClick={() => handleOpenModalUpdateGenre(genre.id)}>✏️</button>
-                                            <button className="delete-btn" onClick={() => handleOpenModalRemoveGenre(genre.id)}>🗑️</button>
+                                            <button className="edit-btn" onClick={() => handleOpenModalUpdateGenre(genre.id)}><i className="fa-solid fa-pen"></i></button>
+                                            <button className="delete-btn" onClick={() => handleOpenModalRemoveGenre(genre.id)}><i className="fa-solid fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 </React.Fragment>
