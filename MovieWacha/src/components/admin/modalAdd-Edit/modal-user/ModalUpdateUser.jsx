@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { updateUser } from "../../../../services/userServis";
 
 const ModalUpdateUser = ({ name, email, role, onClose }) => {
-  console.log("name", name, "email", email, "role", role);
+  
   const [newName, setNewName] = useState(null);
   const [newRole, setNewRole] = useState(null);
   const [newEmail, setNewEmail] = useState(null);

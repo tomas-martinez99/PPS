@@ -26,8 +26,6 @@ export const deleteUser = async (name) => {
   if (!token) {
     throw new Error("No token found, authorization required.");
   }
-  console.log(token)
-  console.log(name)
   const response = await fetch(`${API_URL}/delete/${name}`, {
     method: "DELETE",
     headers: {
@@ -80,9 +78,6 @@ export const updateUser = async (userData, name) => {
       throw new Error("No se ha encontrado la pelicula a modificar");
     }
 
-    const data = await response.json();
-    console.log("Serie Actualizada", data);
-    return data;
   } catch (error) {
     console.error("Error al agregar la serie:", error.message);
     throw error;

@@ -162,13 +162,13 @@ const AbmMovies = () => {
                     className="edit-btn"
                     onClick={() => handleOpenModalUpdateMovie(movies.id)}
                   >
-                    ✏️
+                    <i className="fa-solid fa-pen"></i>
                   </button>
                   <button
                     className="delete-btn"
                     onClick={() => handleOpenModalRemoveMovie(movies.id)}
                   >
-                    🗑️
+                    <i className="fa-solid fa-trash"></i>
                   </button>
                 </td>
               </tr>

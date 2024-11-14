@@ -162,7 +162,7 @@ export const addSeason = async (seasonData) => {
 
 export const deleteSeason = async (idSeason) => {
   const token = localStorage.getItem("token");
-  const response = await fetch(`${API_URL}/delete-season-from-serie?idSeason=${idSeason}`, {
+  const response = await fetch(`${API_URL}/delete-season-from-serie/${idSeason}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`,

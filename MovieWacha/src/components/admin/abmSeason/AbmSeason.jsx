@@ -56,7 +56,8 @@ const AbmSeason = ({ serieId }) => {
         setShowModalAddEpisode(false)
     }
     return (
-        <>
+        
+            <>
             {showModalEditSeason && <ModalUpdateSeason seasonId ={selectedSeasonId} onClose={handleCloseModal} />}
              {showModalAddEpisode && <ModalAddEpisode seasonId ={selectedSeasonId}  onClose={handleCloseModal}  />} 
             {season.length > 0 ? season.map((season) => (
@@ -88,7 +89,8 @@ const AbmSeason = ({ serieId }) => {
                     <td></td>
                     <td></td>
                 </tr>}
-        </>
+                </>
+        
     )
 
 }
