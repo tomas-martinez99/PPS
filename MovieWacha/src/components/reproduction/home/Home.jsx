@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
 import ExampleCarouselImage from "../../ExampleCarouselImage";
 import "./home.css";
@@ -14,8 +14,10 @@ import {
   deleteFavorite,
   getFavorites,
 } from "../../../services/FavoritesService";
+import { AuthenticationContext } from "../../../services/Authentication.context";
 
 const Home = () => {
+  const { user } = useContext(AuthenticationContext);
   const [error, setError] = useState(null);
   const [movieShowcase, setMovieShowcase] = useState([]);
   const [movies, setMovies] = useState([]);
@@ -77,7 +79,9 @@ const Home = () => {
         console.error("There was a problem with the fetch operation:", error);
       }
     };
-    fetchFavorites();
+    if (user) {
+      fetchFavorites();
+    }
   }, []);
 
   const handleWatchMovie = (movieId) => {
@@ -136,21 +140,22 @@ const Home = () => {
                       >
                         Ver pelicula
                       </button>
-                      {favorites.find((fav) => fav.title == movie.title) ? (
-                        <button
-                          className="add-list-button"
-                          onClick={() => deletefromMyList(movie.id)}
-                        >
-                          Eliminar de mi lista
-                        </button>
-                      ) : (
-                        <button
-                          className="add-list-button"
-                          onClick={() => addToMyList(movie)}
-                        >
-                          Agregar a mi lista
-                        </button>
-                      )}
+                      {user &&
+                        (favorites.find((fav) => fav.title == movie.title) ? (
+                          <button
+                            className="add-list-button"
+                            onClick={() => deletefromMyList(movie.id)}
+                          >
+                            Eliminar de mi lista
+                          </button>
+                        ) : (
+                          <button
+                            className="add-list-button"
+                            onClick={() => addToMyList(movie)}
+                          >
+                            Agregar a mi lista
+                          </button>
+                        ))}
                     </div>
                   </Carousel.Caption>
                 </Carousel.Item>

@@ -14,7 +14,7 @@ import AbmMovies from "./components/admin/abmMovies/AbmMovies";
 import SelectPlan from "./components/suscripcion/selectPlan/SelectPlan";
 import ConfirmPlan from "./components/suscripcion/confirmPlan/ConfirmPlan";
 import PaymentSuccess from "./components/suscripcion/payment/PaymentSuccess";
-import WatchMovie from "./components/WatchMovie/WatchMovie";
+import WatchMovie from "./components/watchMovie/WatchMovie";
 import PreReproMovie from "./components/reproduction/pre-repro/PreReproMovie";
 import PreReproSerie from "./components/reproduction/pre-repro/preReroSerie";
 import SearchResults from "./components/search-results/SearchResults";
@@ -106,7 +106,11 @@ function App() {
     },
     {
       path: "/series",
-      element: <MainLayout>{<Series />}</MainLayout>,
+      element: (
+        <MainLayout>
+          <Series />
+        </MainLayout>
+      ),
     },
     {
       path: "/abmSeries",
@@ -132,7 +136,9 @@ function App() {
       path: "/abmMovies",
       element: (
         <MainLayout>
-          <AbmMovies />
+          <ProtectedAdmin>
+            <AbmMovies />
+          </ProtectedAdmin>
         </MainLayout>
       ),
     },
@@ -140,7 +146,9 @@ function App() {
       path: "/abmGenres",
       element: (
         <MainLayout>
-          <AbmGenres />
+          <ProtectedAdmin>
+            <AbmGenres />
+          </ProtectedAdmin>
         </MainLayout>
       ),
     },
@@ -213,7 +221,9 @@ function App() {
       path: "/statistics",
       element: (
         <MainLayout>
-          <Statistics />
+          <ProtectedAdmin>
+            <Statistics />
+          </ProtectedAdmin>
         </MainLayout>
       ),
     },
@@ -230,6 +240,14 @@ function App() {
       element: (
         <MainLayout>
           <MyList />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "*",
+      element: (
+        <MainLayout>
+          <UserNotPermis />
         </MainLayout>
       ),
     },

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getMovieById } from "../../../services/homeServices";
 import "./preReproMovie.css"; // Importar los estilos
@@ -10,8 +10,10 @@ import {
   deleteFavorite,
   getFavorites,
 } from "../../../services/FavoritesService";
+import { AuthenticationContext } from "../../../services/Authentication.context";
 
 const PreReproMovie = () => {
+  const { user } = useContext(AuthenticationContext);
   const { movieId } = useParams();
   const [movie, setMovie] = useState({});
   const [related, setRelated] = useState([]);
@@ -135,21 +137,22 @@ const PreReproMovie = () => {
               Ver Ahora
             </button>
 
-            {favorites.find((fav) => fav.title == movie.title) ? (
-              <button
-                className="add-list-button"
-                onClick={() => deletefromMyList(movie.id)}
-              >
-                Eliminar de mi lista
-              </button>
-            ) : (
-              <button
-                className="add-list-button"
-                onClick={() => addToMyList(movie)}
-              >
-                Agregar a mi lista
-              </button>
-            )}
+            {user &&
+              (favorites.find((fav) => fav.title == movie.title) ? (
+                <button
+                  className="add-list-button"
+                  onClick={() => deletefromMyList(movie.id)}
+                >
+                  Eliminar de mi lista
+                </button>
+              ) : (
+                <button
+                  className="add-list-button"
+                  onClick={() => addToMyList(movie)}
+                >
+                  Agregar a mi lista
+                </button>
+              ))}
           </div>
         </div>
         <img

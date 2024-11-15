@@ -57,7 +57,7 @@ const WatchMovie = () => {
     fetchData();
   }, [movieId]);
 
-  if (!movieById) {
+  if (!movieId) {
     return <div>Cargando...</div>;
   }
 
@@ -83,7 +83,7 @@ const WatchMovie = () => {
 
       {user && userState == "Active" && (
         <>
-          <h1>Ver Película: {movieById.title}</h1>
+          <h1>Ver Película: {movieId.title}</h1>
           <video ref={videoRef} controls width="100%">
             Tu navegador no soporta la etiqueta de video.
           </video>
