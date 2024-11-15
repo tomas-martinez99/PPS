@@ -14,7 +14,11 @@ export const getFavorites = async () => {
       },
     });
     if (!response.ok) {
-      throw new Error("No tiene favoritos agregados");
+      if (response.status == 404) {
+        console.log("No hay favoritos");
+      } else {
+        throw new Error("No tiene favoritos agregados");
+      }
     }
     const data = await response.json();
     return data;

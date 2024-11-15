@@ -29,24 +29,21 @@ const PreReproSerie = () => {
   const [showRelated, setShowRelated] = useState(false);
   const [showTemporadas, setShowTemporadas] = useState(true);
 
+  const fetchEpisodeFromSerie = async () => {
+    try {
+      const result = await getEpisodeFromSeason(temporadaSelected);
+      setEpisodes(result);
+    } catch (error) {
+      setError(error);
+      console.error("There was a problem with the fetch operation:", error);
+    }
+  };
   useEffect(() => {
     const fetchSerie = async () => {
       try {
         const result = await getSerieById(serieId);
         setSerie(result);
         setTemporadas(result.seasons);
-        console.log(result);
-      } catch (error) {
-        setError(error);
-        console.error("There was a problem with the fetch operation:", error);
-      }
-    };
-
-    const fetchEpisodeFromSerie = async () => {
-      try {
-        const result = await getEpisodeFromSeason(temporadaSelected);
-        setEpisodes(result);
-        console.log("episodes", result);
       } catch (error) {
         setError(error);
         console.error("There was a problem with the fetch operation:", error);
@@ -55,7 +52,13 @@ const PreReproSerie = () => {
 
     fetchSerie();
     fetchEpisodeFromSerie();
-  }, [serieId]);
+  }, [serieId, temporadaSelected]);
+
+  const handleChangeTemporada = (e) => {
+    setTemporadasSelected(e.target.value);
+
+    fetchEpisodeFromSerie();
+  };
 
   // FALTA SERIES POR GENERO
 
@@ -83,7 +86,6 @@ const PreReproSerie = () => {
       try {
         const result = await getFavorites();
         setFavorites(result);
-        console.log("favorites", result);
       } catch (error) {
         setError(error);
         console.error("There was a problem with the fetch operation:", error);
@@ -99,7 +101,6 @@ const PreReproSerie = () => {
         type: 1,
       };
       const response = await addFavorites(request);
-      console.log("Serie agregada a la lista:", response);
 
       setFavorites((prevFavorites) => [...prevFavorites, serie]);
     } catch (error) {
@@ -110,7 +111,6 @@ const PreReproSerie = () => {
   const deletefromMyList = async (serieId) => {
     try {
       const response = await deleteFavorite(serieId, 1);
-      console.log("Serie eliminada a la lista:", response);
       setFavorites((prevFavorites) =>
         prevFavorites.filter((fav) => fav.id !== serieId)
       );
@@ -240,7 +240,7 @@ const PreReproSerie = () => {
                   className="form-select"
                   name=""
                   id=""
-                  onChange={(e) => setTemporadasSelected(e.target.value)}
+                  onChange={(e) => handleChangeTemporada(e)}
                 >
                   {temporadas.map((tempo) => (
                     <option key={tempo.id} value={tempo.id}>
@@ -252,7 +252,7 @@ const PreReproSerie = () => {
             </div>
             <div className="col-md-12 mt-4">
               <div className="ep-container">
-                <MediaList ep={episodes}></MediaList>
+                <MediaList key={episodes.length} ep={episodes}></MediaList>
               </div>
             </div>
           </div>

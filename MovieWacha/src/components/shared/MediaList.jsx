@@ -23,9 +23,7 @@ const MediaList = ({ movies, series, ep, favorites }) => {
       try {
         const result = await getFavorites();
         setMiLista(result);
-        console.log("favorites", result);
       } catch (error) {
-        setError(error);
         console.error("There was a problem with the fetch operation:", error);
       }
     };
@@ -71,7 +69,6 @@ const MediaList = ({ movies, series, ep, favorites }) => {
     addByGenre(series, 1); // 1 para series
 
     setCombinedByGenre(combined);
-    console.log(combined);
   };
 
   useEffect(() => {
